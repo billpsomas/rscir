@@ -11,15 +11,15 @@ def replace_class_names(additional_classes, classes_change):
 
     return named_classes_list
 
-def norm_cdf(matrix):
-    row_means = matrix.mean(dim=1, keepdim=True)
-    row_stds = matrix.std(dim=1, keepdim=True)
+def norm_cdf(matrix, dim=0):
+    row_means = matrix.mean(dim=dim, keepdim=True)
+    row_stds = matrix.std(dim=dim, keepdim=True)
     matrix = 0.5 * (1 + torch.erf((matrix - row_means) / (row_stds * torch.sqrt(torch.tensor(2.0)))))
     return matrix
 
-def norm_gaussian(matrix):
-    row_means = matrix.mean(dim=1, keepdim=True)
-    row_stds = matrix.std(dim=1, keepdim=True)
+def norm_gaussian(matrix, dim=0):
+    row_means = matrix.mean(dim=dim, keepdim=True)
+    row_stds = matrix.std(dim=dim, keepdim=True)
     matrix = (matrix-row_means)/row_stds
     return matrix
 

@@ -34,7 +34,7 @@ def metrics_calc(rankings, cls, label_counts, classes_change, query_index, at):
         precisions.append(precision_at_rank)
 
     ap = sum(precisions) / len(precisions) if precisions else 0
-    metrics["AP"] = ap
+    metrics["AP"] = round(ap*100, 2)
 
     for k in at:
         top_k_indices = rankings[:k]
@@ -46,8 +46,8 @@ def metrics_calc(rankings, cls, label_counts, classes_change, query_index, at):
         recall_at_k = relevant_count / len(query_classes) if query_classes else 0
         precision_at_k = relevant_count / k if k else 0
 
-        metrics[f"R@{k}"] = recall_at_k
-        metrics[f"P@{k}"] = precision_at_k
+        metrics[f"R@{k}"] = round(recall_at_k*100, 2)
+        metrics[f"P@{k}"] = round(precision_at_k*100, 2)
 
     return metrics
 
@@ -91,49 +91,6 @@ def calculate_rankings(method, query_features, text_features, database_features)
     
     return ranks.detach().cpu()
 
-'''
-def metrics_calc(rankings, target_domain, current_query_classes, database_classes, database_domains, at):
-
-    metrics = {}
-    
-    class_id_map = {class_name: idx for idx, class_name in enumerate(database_classes)}
-    domain_id_map = {domain_name: idx for idx, domain_name in enumerate(database_domains)}
-
-    database_classes_ids = [class_id_map[class_name] for class_name in database_classes]
-    database_domains_ids = [domain_id_map[domain_name] for domain_name in database_domains]
-    query_classes_ids = [class_id_map[class_name] for class_name in current_query_classes]
-    target_domain_id = domain_id_map[target_domain]
-
-    database_classes_tensor = torch.tensor(database_classes_ids).to(rankings.device)
-    database_domains_tensor = torch.tensor(database_domains_ids).to(rankings.device)
-    query_classes_tensor = torch.tensor(query_classes_ids).to(rankings.device)
-    target_domain_tensor = torch.tensor(target_domain_id).to(rankings.device)
-
-    class_tensor = (database_classes_tensor[rankings] == torch.unsqueeze(query_classes_tensor, 1).expand_as(rankings)).float()
-    domain_tensor = (database_domains_tensor[rankings] == target_domain_tensor).float()
-
-    correct = domain_tensor*class_tensor
-
-    for k in at:
-        correct_k = correct[:, :k]
-        num_correct = torch.sum(correct_k, dim=1)
-        num_predicted = torch.sum(torch.ones_like(correct_k), dim=1)
-        num_total = torch.sum(correct, dim=1)
-        recall = torch.mean(num_correct / (num_total+1e-5))
-        precision = torch.mean(num_correct / num_predicted)
-        metrics[f"R@{k}"] = round(recall.item()*100, 2)
-        metrics[f"P@{k}"] = round(precision.item()*100, 2)
-        #metrics[f"mAP@{k}"]
-    return metrics
-'''
-
-'''
-examples of valid methods
-methods = ["Image only", ""Text only", "Add Similarities", "Multiply Similarities", "Minimum Similarity", 
-           "Add Similarities Norm", "Multiply Similarities Norm", "Minimum Similarity Norm"]
-best_methods = ["Add Similarities Norm"]
-'''
-
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Validating extracted features')
     parser.add_argument('--model_name', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model to use')
@@ -157,7 +114,10 @@ if __name__=="__main__":
     model = model.cuda().eval()
 
     root = "/mnt/datalv/bill/datasets/"
-    methods = ["Add Similarities"]
+    methods = ["Image only"]
+
+    #methods = ["Image only", "Text only", "Add Similarities", "Multiply Similarities", "Minimum Similarity", 
+    #       "Add Similarities Norm", "Multiply Similarities Norm", "Minimum Similarity Norm"]
 
     #metrics = {}
     #for method in methods:
@@ -195,44 +155,14 @@ if __name__=="__main__":
                     metrics_final[method][f"P@{k}"].append(temp_metrics[f"P@{k}"])
                 metrics_final[method]["AP"].append(temp_metrics["AP"])
 
-    breakpoint()
     # Calculate the average for each metric
     for method in metrics_final:
         for metric in metrics_final[method]:
             metrics_final[method][metric] = sum(metrics_final[method][metric]) / len(metrics_final[method][metric]) if metrics_final[method][metric] else 0
 
+    print(metrics_final)
+
 
 '''
-domains = replace_class_names(additional_classes, classes_change)
-query_domains = replace_domain_names(query_domains, domain_change)
-database_domains = replace_domain_names(database_domains, domain_change)
-query_paths = [path.replace('/datagrid/personal/psomavas/datasets/', root) for path in query_paths]
-database_paths = [path.replace('/datagrid/personal/psomavas/datasets/', root) for path in database_paths]
-
-for idx1, source_domain in enumerate(domains):
-    current_indices = [i for i, item in enumerate(query_domains) if item == source_domain]
-    current_cls_query_features = query_cls_features[current_indices, :]
-    current_query_paths = [query_paths[i] for i in current_indices]
-    current_query_classes = [query_classes[i] for i in current_indices]
-    current_query_domains = [query_domains[i] for i in current_indices]
-    for idx2, target_domain in enumerate(domains):
-        if idx1 != idx2:
-            text = tokenize(target_domain).to('cuda')
-            text_feature = model.encode_text(text)
-            text_feature = (text_feature / text_feature.norm(dim=-1, keepdim=True)).squeeze().detach().to(torch.float32)
-            text_feature = text_feature.repeat((len(current_query_classes), 1))
-            real_text =len(current_query_classes)*[target_domain]
-            for method in methods:
-                time1 = time.time()
-                rankings = calculate_rankings(method, current_cls_query_features, current_patch_query_features, current_query_attn_at_6, text_feature, real_text, database_cls_features, database_patch_features, database_attn_at_6, current_query_paths, database_paths=database_paths, actual_label_names=query_classes)
-                metrics[method][source_domain+'-->'+target_domain] = metrics_calc(rankings, target_domain, current_query_classes, database_classes, database_domains, at)
-                print(round(time.time()-time1, 1), source_domain+'-->'+target_domain, method, metrics[method][source_domain+'-->'+target_domain])
-
-suffix = f"lr_{args.lr}_iters_{args.iters}_alpha_{args.alpha}"
-import copy
-
-metrics_final = {}
-for key in metrics.keys():
-    metrics_final[key + "_" + suffix] = metrics[key]
 dict_to_csv(metrics_final, 'sgd_iters/' + mode+'_'+ suffix +'.csv') #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
 '''
