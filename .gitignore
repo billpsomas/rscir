@@ -1,2 +1,3 @@
 checkpoints/
 models/
+__pycache__/

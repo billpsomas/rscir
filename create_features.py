@@ -1,24 +1,12 @@
 import os
-import time
-import json
 import numpy as np
 import torch
-import torch.nn as nn
 from PIL import Image
-import sys
-import pdb
-from pdb import set_trace as st
-import torch.nn.functional as F
-import torchvision.transforms as T
 import open_clip
-from torch.utils.data import Dataset, DataLoader, SubsetRandomSampler
+from torch.utils.data import Dataset, DataLoader
 import pickle
-from nltk.corpus import words
-import nltk
-import csv
-import types
 import argparse
-from torchvision.transforms import Resize, CenterCrop, ToTensor, Compose
+from torchvision.transforms import Resize, CenterCrop, Compose
 
 
 class ImageSegMaps(Dataset):
@@ -60,6 +48,24 @@ class ImageSegMaps(Dataset):
         #counts = self.count_values(map, labels)
         return image, map, label_counts, img_path
 
+def find_additional_classes(label_counts):
+    additional_classes_list = []
+
+    for i, current_sample in enumerate(label_counts):
+        current_classes = set(key for key, val in current_sample.items() if val > 0)
+        additional_classes = set()
+
+        for j, other_sample in enumerate(label_counts):
+            if i != j:
+                other_classes = set(key for key, val in other_sample.items() if val > 0)
+                
+                if current_classes.issubset(other_classes):
+                    additional_classes.update(other_classes - current_classes)
+
+        additional_classes_list.append(list(additional_classes))
+
+    return additional_classes_list
+
 def save_segmaps_dataset(dataloader, path_save):
     all_image_features, all_image_maps, all_label_counts, all_image_paths = [], [], [], []
     with torch.no_grad():
@@ -79,21 +85,25 @@ def save_segmaps_dataset(dataloader, path_save):
                     temp_label_counts[class_label] = count
                 all_label_counts.append(temp_label_counts)
             ite += 128
+        print('Finding additional classes...')
+        all_additional_classes = find_additional_classes(all_label_counts)
         all_image_features = torch.cat(all_image_features, dim=0)
         all_maps = torch.cat(all_image_maps, dim=0)
         dict_save = {}
         dict_save['feats'] = all_image_features.data.cpu().numpy()
         dict_save['maps'] = all_maps.data.cpu().numpy()
         dict_save['label_counts'] = all_label_counts
+        dict_save['additional_classes'] = all_additional_classes
         dict_save['path'] = all_image_paths
         directory = os.path.dirname(path_save)
         if not os.path.exists(directory):
             os.makedirs(directory)
         with open(path_save,"wb") as f:
+            print('Writing picke file...')
             pickle.dump(dict_save,f)
 
 if __name__=="__main__":
-    parser = argparse.ArgumentParser(description='Training the Model')
+    parser = argparse.ArgumentParser(description='Extracting features from the model')
     parser.add_argument('--model_name', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model to use')
     parser.add_argument('--dataset', type=str, default='dlrsd', choices=['dlrsd', 'patternet', 'seasons'], help='choose dataset')
     parser.add_argument('--size', type=int, default=224, help='resize and crop size')
@@ -105,6 +115,7 @@ if __name__=="__main__":
     ckpt = torch.load(f"models/RemoteCLIP-{args.model_name}.pt", map_location="cpu")
     message = model.load_state_dict(ckpt)
     print(message)
+    print(f"{args.model_name} has been loaded!")
 
     model = model.cuda().eval()
 
@@ -117,7 +128,6 @@ if __name__=="__main__":
         full_dataset_path = "/mnt/datalv/bill/datasets/data/DLRSD/dlrsd.csv"
         full_dataset = ImageSegMaps(full_dataset_path, image_transforms=preprocess_images, map_transforms=preprocess_maps, root='/mnt/datalv/bill/datasets/data/DLRSD/')
         full_dataloader = DataLoader(full_dataset, batch_size=128, shuffle=False, num_workers=8, pin_memory=True, drop_last=False)
-        breakpoint()
         save_segmaps_dataset(full_dataloader, '/mnt/datalv/bill/datasets/clip_features/dlrsd/dlrsd.pkl')
     '''
     elif args.dataset == 'seasons':
