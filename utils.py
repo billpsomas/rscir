@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 from PIL import Image
+import csv
 
 def replace_class_names(additional_classes, classes_change):
     named_classes_list = []
@@ -47,3 +48,17 @@ def preprocess_image(img_path, new_width, new_height, crop=False):
     img_array = np.array(pil_img)
     
     return img_array
+
+def dict_to_csv(metrics_dict, filename):
+    # Extract headers for CSV (metric names)
+    headers = ["Method"] + list(next(iter(metrics_dict.values())).keys())
+
+    # Write to CSV
+    with open(filename, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=headers)
+
+        writer.writeheader()
+        for method, metrics in metrics_dict.items():
+            row = {'Method': method}
+            row.update(metrics)
+            writer.writerow(row)

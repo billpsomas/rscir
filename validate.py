@@ -146,7 +146,4 @@ if __name__=="__main__":
 
     print(metrics_final)
 
-
-'''
-dict_to_csv(metrics_final, 'sgd_iters/' + mode+'_'+ suffix +'.csv') #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
-'''
+    dict_to_csv(metrics_final, args.dataset + 'metrics.csv') #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
