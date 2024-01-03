@@ -26,10 +26,10 @@ def metrics_calc(rankings, cls, label_counts, classes_change, query_index, at):
     cls_id = list(classes_change.keys())[list(classes_change.values()).index(cls)]
     query_classes.add(cls_id)  # Add the additional class
 
-    relevant_indices = [idx for idx in range(len(rankings)) if query_classes.issubset(set(key for key, val in label_counts[rankings[idx]].items() if val > 0))]
+    relevant_ranking_indices = [idx for idx in range(len(rankings)) if query_classes.issubset(set(key for key, val in label_counts[rankings[idx]].items() if val > 0))]
 
     precisions = []
-    for idx, rank in enumerate(relevant_indices, start=1):
+    for idx, rank in enumerate(relevant_ranking_indices, start=1):
         precision_at_rank = idx / (rank + 1)  # rank is zero-indexed
         precisions.append(precision_at_rank)
 
@@ -40,7 +40,7 @@ def metrics_calc(rankings, cls, label_counts, classes_change, query_index, at):
         top_k_indices = rankings[:k]
 
         # Count how many retrieved items are relevant
-        relevant_count = sum(idx in relevant_indices for idx in top_k_indices)
+        relevant_count = sum(idx in relevant_ranking_indices for idx in top_k_indices)
 
         # Calculate Recall@k and Precision@k
         recall_at_k = relevant_count / len(query_classes) if query_classes else 0
@@ -51,8 +51,7 @@ def metrics_calc(rankings, cls, label_counts, classes_change, query_index, at):
 
     return metrics
 
-def calculate_rankings(method, query_features, text_features, database_features):
-    lam = 0.05
+def calculate_rankings(method, query_features, text_features, database_features, lam=0.5):
 
     if np.array([x in method for x in ['Image','Add Similarities','Multiply Similarities', 'Minimum Similarity']]).any():
         sim_img = (query_features @ database_features.t())
@@ -64,30 +63,15 @@ def calculate_rankings(method, query_features, text_features, database_features)
         sim_text = norm_cdf(sim_text)
 
     if "image only" in method.lower():
-        sim_total = sim_img
-        ranks = torch.argsort(sim_total, descending=True)
+        ranks = torch.argsort(sim_img, descending=True)
     elif "text only" in method.lower():
-        sim_total = sim_text
-        ranks = torch.argsort(sim_total, descending=True)
-    elif "Add Similarities" in method:
-        if  'rankagr' in method.lower():
-            rank_img = calculate_ranks(sim_img)
-            rank_text = calculate_ranks(sim_text)
-            ranks = torch.argsort(rank_img + rank_text, descending=False)
-        else:
-            ranks = torch.argsort(sim_img + sim_text, descending=True)
-    elif "Multiply Similarities" in method:
-        if  'rankagr' in method.lower():
-            rank_img = calculate_ranks(sim_img)
-            rank_text = calculate_ranks(sim_text)
-            ranks = torch.argsort((1/rank_img) * (1/rank_text), descending=True)
-        else:
-            ranks = torch.argsort(torch.mul(sim_img, sim_text), descending=True)
-    elif "Minimum Similarity" in method:
-        if  'rankagr' in method.lower():
-            rank_img = calculate_ranks(sim_img)
-            rank_text = calculate_ranks(sim_text)
-            ranks = torch.argsort(torch.maximum(rank_img, rank_text), descending=False)
+        ranks = torch.argsort(sim_text, descending=True)
+    elif "add similarities" in method.lower():
+        ranks = torch.argsort(sim_img + sim_text, descending=True)
+    elif "multiply similarities" in method.lower():
+        ranks = torch.argsort(torch.mul(sim_img, sim_text), descending=True)
+    elif "minimum similarity" in method.lower():
+        ranks = torch.argsort(torch.maximum(sim_img, sim_text), descending=False)
     
     return ranks.detach().cpu()
 
@@ -103,7 +87,7 @@ if __name__=="__main__":
     parser.add_argument('--init', type=str, default="knn", help="initialize token emb", choices=["rnd", "knn"])
     args = parser.parse_args()
     
-    model, _, preprocess_images = open_clip.create_model_and_transforms(args.model_name)
+    model, _, _ = open_clip.create_model_and_transforms(args.model_name)
     tokenizer = open_clip.get_tokenizer(args.model_name)
 
     ckpt = torch.load(f"models/RemoteCLIP-{args.model_name}.pt", map_location="cpu")
@@ -114,10 +98,9 @@ if __name__=="__main__":
     model = model.cuda().eval()
 
     root = "/mnt/datalv/bill/datasets/"
-    methods = ["Image only"]
+    #methods = ["Add Similarities Norm"]
 
-    #methods = ["Image only", "Text only", "Add Similarities", "Multiply Similarities", "Minimum Similarity", 
-    #       "Add Similarities Norm", "Multiply Similarities Norm", "Minimum Similarity Norm"]
+    methods = ["Image only", "Text only", "Add Similarities", "Multiply Similarities", "Add Similarities Norm", "Multiply Similarities Norm"]
 
     #metrics = {}
     #for method in methods:
@@ -131,7 +114,7 @@ if __name__=="__main__":
         at = [5, 10, 20, 50]
         
     add_classes = replace_class_names(additional_classes, classes_change)
-    
+
     metrics_final = {method: {f"R@{k}": [] for k in at} for method in methods}
     for method in metrics_final:
         metrics_final[method].update({f"P@{k}": [] for k in at})
@@ -141,7 +124,8 @@ if __name__=="__main__":
         print(f'Retrieval running for query {i}', end='\r')
         query_feature = features[i]
         for j, cls in enumerate(add_classes[i]):
-            text = tokenizer(cls).to('cuda')
+            prompt = "with " + cls
+            text = tokenizer(prompt).to('cuda')
             text_feature = model.encode_text(text)
             text_feature = (text_feature / text_feature.norm(dim=-1, keepdim=True)).squeeze().detach().to(torch.float32)
             for method in methods:
@@ -158,7 +142,7 @@ if __name__=="__main__":
     # Calculate the average for each metric
     for method in metrics_final:
         for metric in metrics_final[method]:
-            metrics_final[method][metric] = sum(metrics_final[method][metric]) / len(metrics_final[method][metric]) if metrics_final[method][metric] else 0
+            metrics_final[method][metric] = round(sum(metrics_final[method][metric]) / len(metrics_final[method][metric]) if metrics_final[method][metric] else 0, 2)
 
     print(metrics_final)
 
