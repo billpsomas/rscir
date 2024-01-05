@@ -138,6 +138,7 @@ if __name__=="__main__":
     parser.add_argument('--model_name', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model to use')
     parser.add_argument('--dataset', type=str, default='patternnet', choices=['dlrsd', 'patternnet', 'seasons'], help='choose dataset')
     parser.add_argument('--size', type=int, default=224, help='resize and crop size')
+    parser.add_argument('--batch_size', type=int, default=128, help='dataloader batch size')
     args = parser.parse_args()
 
     model, _, preprocess_images = open_clip.create_model_and_transforms(args.model_name)
@@ -153,12 +154,12 @@ if __name__=="__main__":
     if args.dataset == 'dlrsd':
         full_dataset_path = "/mnt/datalv/bill/datasets/data/DLRSD/dlrsd.csv"
         full_dataset = ImageSegMapsDataset(full_dataset_path, image_transforms=preprocess_images, root='/mnt/datalv/bill/datasets/data/DLRSD/')
-        full_dataloader = DataLoader(full_dataset, batch_size=128, shuffle=False, num_workers=8, pin_memory=True, drop_last=False)
+        full_dataloader = DataLoader(full_dataset, batch_size=args.batch_size, shuffle=False, num_workers=8, pin_memory=True, drop_last=False)
         save_segmaps_dataset(full_dataloader, '/mnt/datalv/bill/datasets/clip_features/dlrsd/dlrsd2.pkl')
     elif args.dataset == 'patternnet':
         full_dataset_path = "/mnt/datalv/bill/datasets/data/PatternNet/patternnet.csv"
         full_dataset = ImageSegMapsDataset(full_dataset_path, image_transforms=preprocess_images, withsegmaps=False, root='/mnt/datalv/bill/datasets/data/PatternNet/')
-        full_dataloader = DataLoader(full_dataset, batch_size=128, shuffle=False, num_workers=8, pin_memory=True, drop_last=False)
+        full_dataloader = DataLoader(full_dataset, batch_size=args.batch_size, shuffle=False, num_workers=8, pin_memory=True, drop_last=False)
         save_dataset(full_dataloader, '/mnt/datalv/bill/datasets/clip_features/patternnet/patternnet.pkl')
     '''
     elif args.dataset == 'seasons':
