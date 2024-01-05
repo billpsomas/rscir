@@ -27,7 +27,7 @@ def metrics_calc(rankings, cls, label_counts, classes_change, query_index, at):
     query_classes.add(cls_id)  # Add the additional class
 
     relevant_ranking_indices = [idx for idx in range(len(rankings)) if query_classes.issubset(set(key for key, val in label_counts[rankings[idx]].items() if val > 0))]
-
+    
     precisions = []
     for idx, rank in enumerate(relevant_ranking_indices, start=1):
         precision_at_rank = idx / (rank + 1)  # rank is zero-indexed
@@ -102,9 +102,6 @@ if __name__=="__main__":
 
     methods = ["Image only", "Text only", "Add Similarities", "Multiply Similarities", "Add Similarities Norm", "Multiply Similarities Norm"]
 
-    #metrics = {}
-    #for method in methods:
-    #    metrics[method] = {}
     if args.dataset == 'dlrsd':
         print('Reading features and maps...')
         features, maps, label_counts, additional_classes, paths = read_segmaps_dataset_features(root+'/clip_features/dlrsd/dlrsd.pkl')
