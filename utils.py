@@ -62,3 +62,8 @@ def dict_to_csv(metrics_dict, filename):
             row = {'Method': method}
             row.update(metrics)
             writer.writerow(row)
+
+def timer(start, end):
+        hours, rem = divmod(end - start, 3600)
+        minutes, seconds = divmod(rem, 60)
+        print("Elapsed time: {:0>2}:{:0>2}:{:05.2f}".format(int(hours), int(minutes), seconds))

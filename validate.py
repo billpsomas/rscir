@@ -84,28 +84,33 @@ def create_prompts(paired):
 
     return prompts
 
-def metrics_calc2(rankings, prompt, paths, query_filenames, attribute_values, at):
+def metrics_calc2(rankings, prompt, paths, filename_to_index_map, attribute_values, at):
     metrics = {}
     # Convert rankings to filenames to find their corresponding attribute values
     retrieved_filenames = [os.path.basename(paths[idx]) for idx in rankings]
 
-    # Find indices in query_filenames corresponding to retrieved filenames
-    retrieved_indices = [query_filenames.index(filename) if filename in query_filenames else -1 for filename in retrieved_filenames]
+    # Find indices in query_filenames using the precomputed map
+    retrieved_indices = [filename_to_index_map.get(filename, -1) for filename in retrieved_filenames]
 
     # Determine if each retrieval is relevant (True or False)
     is_relevant = [attribute_values[idx] == prompt if idx != -1 else False for idx in retrieved_indices]
 
     # Calculate Average Precision (AP)
-    precisions = [sum(is_relevant[:k]) / k for k in range(1, len(is_relevant) + 1)]
-    relevant_precisions = [p for p, rel in zip(precisions, is_relevant) if rel]
-    ap = sum(relevant_precisions) / len(relevant_precisions) if relevant_precisions else 0
+    precisions = []
+    relevant_count = 0
+    for k, rel in enumerate(is_relevant, start=1):
+        if rel:
+            relevant_count += 1
+            precisions.append(relevant_count / k)
+
+    ap = sum(precisions) / len(precisions) if precisions else 0
     metrics["AP"] = round(ap * 100, 2)
 
     # Calculate Precision@k and Recall@k
+    total_relevant = sum(is_relevant)
     for k in at:
         relevant_at_k = sum(is_relevant[:k])
         precision_at_k = relevant_at_k / k if k else 0
-        total_relevant = sum(is_relevant)
         recall_at_k = relevant_at_k / total_relevant if total_relevant else 0
 
         metrics[f"P@{k}"] = round(precision_at_k * 100, 2)
@@ -188,7 +193,7 @@ if __name__=="__main__":
 
     root = "/mnt/datalv/bill/datasets/"
     methods = ["Image only", "Text only", "Add Similarities", "Multiply Similarities", "Add Similarities Norm", "Multiply Similarities Norm"]
-    methods = ["Image only"]
+    #methods = ["Add Similarities Norm"]
 
     if args.dataset == 'dlrsd':
         print('Reading features and maps...')
@@ -229,14 +234,15 @@ if __name__=="__main__":
                         metrics_final[method][f"P@{k}"].append(temp_metrics[f"P@{k}"])
                     metrics_final[method]["AP"].append(temp_metrics["AP"])
     elif args.dataset == 'patternnet':
-        query_filenames, attributes, attribute_values = read_csv('dataset.csv')
+        start = time.time()
+        query_filenames, attributes, attribute_values = read_csv('dataset_quantity.csv')
         query_labels = [re.split(r'\d', path)[0] for path in query_filenames] # or something like labels[relative_indices], should give same
         
         # This part is in order to find the prompts
         query_attributelabels = [x + query_labels[ii] for ii, x in enumerate(attributes)]
         # We need to manually replace these, cause they are rising issues
-        query_attributelabels = [x.replace('densitydenseresidential', 'densityresidential') for x in query_attributelabels]
-        query_attributelabels = [x.replace('densitysparseresidential', 'densityresidential') for x in query_attributelabels]
+        #query_attributelabels = [x.replace('densitydenseresidential', 'densityresidential') for x in query_attributelabels]
+        #query_attributelabels = [x.replace('densitysparseresidential', 'densityresidential') for x in query_attributelabels]
         paired = list(zip(query_attributelabels, attribute_values))
         # Create a prompt list with all possible attributes (per class) except the one associated with the current item
         # This will allow each query to retrieve images with all other attributes except its own.
@@ -244,17 +250,32 @@ if __name__=="__main__":
         # them together like colorairplane, sizeairplane and it's okay. TODO: fix it make it smarter
         prompts = create_prompts(paired)
         relative_indices = find_relative_indices(query_filenames, paths)
+        filename_to_index_map = {filename: i for i, filename in enumerate(query_filenames)}
+        
+        text_feature_cache = {}
         for i, idx in enumerate(relative_indices):
             print(f'Retrieval running for query {i}', end='\r')
             query_feature = features[idx]
             for prompt in prompts[i]:
-                text = tokenizer(prompt).to('cuda')
-                text_feature = model.encode_text(text)
-                text_feature = (text_feature / text_feature.norm(dim=-1, keepdim=True)).squeeze().detach().to(torch.float32)
+                # Check if the text feature for this prompt is already computed
+                if prompt not in text_feature_cache:
+                    # If not, compute and cache it
+                    text = tokenizer(prompt).to('cuda')
+                    text_feature = model.encode_text(text)
+                    text_feature = (text_feature / text_feature.norm(dim=-1, keepdim=True)).squeeze().detach().to(torch.float32)
+                    text_feature_cache[prompt] = text_feature
+                else:
+                    # If already computed, retrieve from cache
+                    text_feature = text_feature_cache[prompt]
                 for method in methods:
-                    time1 = time.time()
                     rankings = calculate_rankings(method, query_feature, text_feature, features)
-                    temp_metrics = metrics_calc2(rankings, prompt, paths, query_filenames, attribute_values, at)
+                    temp_metrics = metrics_calc2(rankings, prompt, paths, filename_to_index_map, attribute_values, at)
+
+                    # Accumulate metrics for each method
+                    for k in at:
+                        metrics_final[method][f"R@{k}"].append(temp_metrics[f"R@{k}"])
+                        metrics_final[method][f"P@{k}"].append(temp_metrics[f"P@{k}"])
+                    metrics_final[method]["AP"].append(temp_metrics["AP"])
 
     # Calculate the average for each metric
     for method in metrics_final:
@@ -262,5 +283,7 @@ if __name__=="__main__":
             metrics_final[method][metric] = round(sum(metrics_final[method][metric]) / len(metrics_final[method][metric]) if metrics_final[method][metric] else 0, 2)
 
     print(metrics_final)
+    end = time.time()
+    timer(start, end)
 
-    dict_to_csv(metrics_final, args.dataset + 'metrics.csv') #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
+    dict_to_csv(metrics_final, args.dataset + 'metrics_quantity.csv') #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
