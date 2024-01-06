@@ -178,7 +178,7 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Validating extracted features')
     parser.add_argument('--model_name', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model to use')
     parser.add_argument('--dataset', type=str, default='patternnet', choices=['dlrsd', 'patternnet', 'seasons'], help='choose dataset')
-    parser.add_argument('--attributes', nargs='+', default=['density'], help='a list of attributes')
+    parser.add_argument('--attributes', nargs='+', default=['shape'], help='a list of attributes')
     args = parser.parse_args()
     
     model, _, _ = open_clip.create_model_and_transforms(args.model_name)
@@ -289,4 +289,4 @@ if __name__=="__main__":
         timer(start, end)
 
         print('Writing results to CSV file...')
-        dict_to_csv(metrics_final, args.dataset + 'metrics_{attribute}.csv') #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
+        dict_to_csv(metrics_final, args.dataset + f'metrics_{attribute}.csv') #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
