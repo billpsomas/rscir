@@ -67,3 +67,10 @@ def timer(start, end):
         hours, rem = divmod(end - start, 3600)
         minutes, seconds = divmod(rem, 60)
         print("Elapsed time: {:0>2}:{:0>2}:{:05.2f}".format(int(hours), int(minutes), seconds))
+
+
+attribute = 'density'
+dataset = 'patternnet'
+metrics_final = {'Image only': {'R@5': 0.1, 'R@10': 0.25, 'R@15': 0.41, 'R@20': 0.56, 'P@5': 1.47, 'P@10': 1.91, 'P@15': 2.06, 'P@20': 2.14, 'AP': 8.18}, 'Text only': {'R@5': 1.75, 'R@10': 2.59, 'R@15': 5.49, 'R@20': 8.16, 'P@5': 33.32, 'P@10': 24.96, 'P@15': 31.92, 'P@20': 35.25, 'AP': 15.16}, 'Average Similarities': {'R@5': 0.23, 'R@10': 0.56, 'R@15': 0.9, 'R@20': 1.29, 'P@5': 3.35, 'P@10': 4.06, 'P@15': 4.4, 'P@20': 4.72, 'AP': 10.69}, 'Weighted Similarities Norm': {'R@5': 3.38, 'R@10': 6.69, 'R@15': 9.87, 'R@20': 12.99, 'P@5': 56.09, 'P@10': 55.38, 'P@15': 54.57, 'P@20': 53.82, 'AP': 38.05}}
+
+dict_to_csv(metrics_final, 'results/' + dataset + f'metrics_{attribute}_storagetank.csv')

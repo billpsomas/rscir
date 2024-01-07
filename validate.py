@@ -152,9 +152,9 @@ def metrics_calc(rankings, cls, label_counts, classes_change, query_index, at):
 
 def calculate_rankings(method, query_features, text_features, database_features, lam=0.5):
 
-    if np.array([x in method for x in ['Image','Add Similarities','Multiply Similarities', 'Minimum Similarity']]).any():
+    if np.array([x in method for x in ['Image', 'Average Similarities', 'Weighted Similarities', 'Add Similarities','Multiply Similarities', 'Minimum Similarity']]).any():
         sim_img = (query_features @ database_features.t())
-    if np.array([x in method for x in ['Text','Add Similarities','Multiply Similarities', 'Minimum Similarity']]).any():    
+    if np.array([x in method for x in ['Text', 'Average Similarities', 'Weighted Similarities', 'Add Similarities','Multiply Similarities', 'Minimum Similarity']]).any():    
         sim_text = (text_features @ database_features.t())
 
     if "norm" in method.lower():
@@ -165,6 +165,10 @@ def calculate_rankings(method, query_features, text_features, database_features,
         ranks = torch.argsort(sim_img, descending=True)
     elif "text only" in method.lower():
         ranks = torch.argsort(sim_text, descending=True)
+    elif "average similarities" in method.lower():
+        ranks = torch.argsort((sim_img + sim_text)/2, descending=True)
+    elif "weighted similarities" in method.lower():
+         ranks = torch.argsort((1-lam)*sim_img + lam*sim_text, descending=True)
     elif "add similarities" in method.lower():
         ranks = torch.argsort(sim_img + sim_text, descending=True)
     elif "multiply similarities" in method.lower():
@@ -176,28 +180,32 @@ def calculate_rankings(method, query_features, text_features, database_features,
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Validating extracted features')
-    parser.add_argument('--model_name', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model to use')
+    parser.add_argument('--model', type=str, default='remoteclip', choices=['remoteclip', 'clip'], help='pre-trained model')
+    parser.add_argument('--model_type', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model type')
     parser.add_argument('--dataset', type=str, default='patternnet', choices=['dlrsd', 'patternnet', 'seasons'], help='choose dataset')
-    parser.add_argument('--attributes', nargs='+', default=['shape'], help='a list of attributes')
+    parser.add_argument('--attributes', nargs='+', default=['color', 'shape', 'density', 'quantity'], help='a list of attributes')
+    parser.add_argument('--root', type=str, default='/mnt/datalv/bill/datasets/', help='dataset root directory')
+    parser.add_argument('--methods', nargs='+', default=["Image only", "Text only", "Average Similarities", "Weighted Similarities Norm"], help='methods to evaluate')
     args = parser.parse_args()
     
-    model, _, _ = open_clip.create_model_and_transforms(args.model_name)
-    tokenizer = open_clip.get_tokenizer(args.model_name)
+    model, _, _ = open_clip.create_model_and_transforms(args.model_type)
+    tokenizer = open_clip.get_tokenizer(args.model_type)
 
-    ckpt = torch.load(f"models/RemoteCLIP-{args.model_name}.pt", map_location="cpu")
+    if args.model == 'remoteclip':
+        ckpt = torch.load(f"models/RemoteCLIP-{args.model_type}.pt", map_location="cpu")
+    elif args.model == 'clip':
+        ckpt = torch.load(f"models/CLIP-{args.model_type}.bin", map_location="cpu")
     message = model.load_state_dict(ckpt)
     print(message)
-    print(f"{args.model_name} has been loaded!")
-
+    print(f"{args.model} {args.model_type} has been loaded!")
     model = model.cuda().eval()
-
-    root = "/mnt/datalv/bill/datasets/"
-    methods = ["Image only", "Text only", "Add Similarities", "Multiply Similarities", "Add Similarities Norm", "Multiply Similarities Norm"]
-    #methods = ["Add Similarities Norm"]
 
     if args.dataset == 'dlrsd':
         print('Reading features and maps...')
-        features, maps, label_counts, additional_classes, paths = read_segmaps_dataset_features(root+'/clip_features/dlrsd/dlrsd.pkl')
+        if args.model == 'remoteclip':
+            features, maps, label_counts, additional_classes, paths = read_segmaps_dataset_features(args.root+'/clip_features/dlrsd/dlrsd.pkl')
+        elif args.model == 'clip':
+            features, maps, label_counts, additional_classes, paths = read_segmaps_dataset_features(args.root+'/clip_features/dlrsd/dlrsd_clip.pkl')
         print('Features and maps are loaded!')
         classes_change = {0: "airplane", 1: "bare-soil", 2:"buildings", 3:"cars", 4:"chaparral", 5:"court", 6:"dock", 7:"field", \
                         8:"grass", 9:"mobile-home", 10:"pavement", 11:"sand", 12:"sea", 13:"ship", 14:"tanks", 15:"trees", 16:"water"}
@@ -205,11 +213,14 @@ if __name__=="__main__":
         at = [5, 10, 15, 20]
     elif args.dataset == 'patternnet':
         print('Reading features and maps...')
-        features, labels, paths = read_dataset_features(root+'/clip_features/patternnet/patternnet.pkl')
-        print('Features and maps are loaded!')
+        if args.model == 'remoteclip':
+            features, labels, paths = read_dataset_features(args.root+'/clip_features/patternnet/patternnet.pkl')
+        elif args.model == 'clip':
+            features, labels, paths = read_dataset_features(args.root+'/clip_features/patternnet/patternnet_clip.pkl')
+        print('Features are loaded!')
         at = [5, 10, 15, 20]
 
-    metrics_final = {method: {f"R@{k}": [] for k in at} for method in methods}
+    metrics_final = {method: {f"R@{k}": [] for k in at} for method in args.methods}
     for method in metrics_final:
         metrics_final[method].update({f"P@{k}": [] for k in at})
         metrics_final[method]["AP"] = []
@@ -223,7 +234,7 @@ if __name__=="__main__":
                 text = tokenizer(prompt).to('cuda')
                 text_feature = model.encode_text(text)
                 text_feature = (text_feature / text_feature.norm(dim=-1, keepdim=True)).squeeze().detach().to(torch.float32)
-                for method in methods:
+                for method in args.methods:
                     time1 = time.time()
                     rankings = calculate_rankings(method, query_feature, text_feature, features)
                     temp_metrics = metrics_calc(rankings, cls, label_counts, classes_change, i, at)
@@ -234,59 +245,61 @@ if __name__=="__main__":
                         metrics_final[method][f"P@{k}"].append(temp_metrics[f"P@{k}"])
                     metrics_final[method]["AP"].append(temp_metrics["AP"])
     elif args.dataset == 'patternnet':
-        for attribute in args.attributes:
-            start = time.time()
-            query_filenames, attributes, attribute_values = read_csv(f'dataset_{attribute}.csv')
-            query_labels = [re.split(r'\d', path)[0] for path in query_filenames] # or something like labels[relative_indices], should give the same
-            
-            # This part is in order to find the prompts
-            query_attributelabels = [x + query_labels[ii] for ii, x in enumerate(attributes)]
-            # We need to manually replace these, cause they are rising issues
-            if attribute == 'density':
-                query_attributelabels = [x.replace('densitydenseresidential', 'densityresidential') for x in query_attributelabels]
-                query_attributelabels = [x.replace('densitysparseresidential', 'densityresidential') for x in query_attributelabels]
-            paired = list(zip(query_attributelabels, attribute_values))
-            # Create a prompt list with all possible attributes (per class) except the one associated with the current item
-            # This will allow each query to retrieve images with all other attributes except its own.
-            # THIS WAS FUCKING HARD TO MAKE cause some classes exist with different attributes, so I did a trick naming
-            # them together like colorairplane, sizeairplane and it's okay. TODO: fix it make it smarter
-            prompts = create_prompts(paired)
-            relative_indices = find_relative_indices(query_filenames, paths)
-            filename_to_index_map = {filename: i for i, filename in enumerate(query_filenames)}
-            
-            text_feature_cache = {}
-            for i, idx in enumerate(relative_indices):
-                print(f'Retrieval running for query {i}', end='\r')
-                query_feature = features[idx]
-                for prompt in prompts[i]:
-                    # Check if the text feature for this prompt is already computed
-                    if prompt not in text_feature_cache:
-                        # If not, compute and cache it
-                        text = tokenizer(prompt).to('cuda')
-                        text_feature = model.encode_text(text)
-                        text_feature = (text_feature / text_feature.norm(dim=-1, keepdim=True)).squeeze().detach().to(torch.float32)
-                        text_feature_cache[prompt] = text_feature
-                    else:
-                        # If already computed, retrieve from cache
-                        text_feature = text_feature_cache[prompt]
-                    for method in methods:
-                        rankings = calculate_rankings(method, query_feature, text_feature, features)
-                        temp_metrics = metrics_calc2(rankings, prompt, paths, filename_to_index_map, attribute_values, at)
+        lams = [x*0.1 for x in range(10)]
+        for lam in lams:
+            for attribute in args.attributes:
+                start = time.time()
+                query_filenames, attributes, attribute_values = read_csv(f'patterncom/dataset_{attribute}.csv')
+                query_labels = [re.split(r'\d', path)[0] for path in query_filenames] # or something like labels[relative_indices], should give the same
+                
+                # This part is in order to find the prompts
+                query_attributelabels = [x + query_labels[ii] for ii, x in enumerate(attributes)]
+                # We need to manually replace these, cause they are rising issues
+                if attribute == 'density':
+                    query_attributelabels = [x.replace('densitydenseresidential', 'densityresidential') for x in query_attributelabels]
+                    query_attributelabels = [x.replace('densitysparseresidential', 'densityresidential') for x in query_attributelabels]
+                paired = list(zip(query_attributelabels, attribute_values))
+                # Create a prompt list with all possible attributes (per class) except the one associated with the current item
+                # This will allow each query to retrieve images with all other attributes except its own.
+                # THIS WAS FUCKING HARD TO MAKE cause some classes exist with different attributes, so I did a trick naming
+                # them together like colorairplane, sizeairplane and it's okay. TODO: fix it make it smarter
+                prompts = create_prompts(paired)
+                relative_indices = find_relative_indices(query_filenames, paths)
+                filename_to_index_map = {filename: i for i, filename in enumerate(query_filenames)}
+                
+                text_feature_cache = {}
+                for i, idx in enumerate(relative_indices):
+                    print(f'Retrieval running for query {i}', end='\r')
+                    query_feature = features[idx]
+                    for prompt in prompts[i]:
+                        # Check if the text feature for this prompt is already computed
+                        if prompt not in text_feature_cache:
+                            # If not, compute and cache it
+                            text = tokenizer(prompt).to('cuda')
+                            text_feature = model.encode_text(text)
+                            text_feature = (text_feature / text_feature.norm(dim=-1, keepdim=True)).squeeze().detach().to(torch.float32)
+                            text_feature_cache[prompt] = text_feature
+                        else:
+                            # If already computed, retrieve from cache
+                            text_feature = text_feature_cache[prompt]
+                        for method in args.methods:
+                            rankings = calculate_rankings(method, query_feature, text_feature, features, lam)
+                            temp_metrics = metrics_calc2(rankings, prompt, paths, filename_to_index_map, attribute_values, at)
 
-                        # Accumulate metrics for each method
-                        for k in at:
-                            metrics_final[method][f"R@{k}"].append(temp_metrics[f"R@{k}"])
-                            metrics_final[method][f"P@{k}"].append(temp_metrics[f"P@{k}"])
-                        metrics_final[method]["AP"].append(temp_metrics["AP"])
+                            # Accumulate metrics for each method
+                            for k in at:
+                                metrics_final[method][f"R@{k}"].append(temp_metrics[f"R@{k}"])
+                                metrics_final[method][f"P@{k}"].append(temp_metrics[f"P@{k}"])
+                            metrics_final[method]["AP"].append(temp_metrics["AP"])
 
-        # Calculate the average for each metric
-        for method in metrics_final:
-            for metric in metrics_final[method]:
-                metrics_final[method][metric] = round(sum(metrics_final[method][metric]) / len(metrics_final[method][metric]) if metrics_final[method][metric] else 0, 2)
+                # Calculate the average for each metric
+                for method in metrics_final:
+                    for metric in metrics_final[method]:
+                        metrics_final[method][metric] = round(sum(metrics_final[method][metric]) / len(metrics_final[method][metric]) if metrics_final[method][metric] else 0, 2)
 
-        print(metrics_final)
-        end = time.time()
-        timer(start, end)
+                print(metrics_final)
+                end = time.time()
+                timer(start, end)
 
-        print('Writing results to CSV file...')
-        dict_to_csv(metrics_final, args.dataset + f'metrics_{attribute}.csv') #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
+                print('Writing results to CSV file...')
+                dict_to_csv(metrics_final, 'results/' + args.dataset + f'_metrics_{str(args.model)}_{attribute}_{str(lam)}.csv') #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')

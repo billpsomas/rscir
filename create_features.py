@@ -135,32 +135,35 @@ def save_dataset(dataloader, path_save):
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Extracting features from the model')
-    parser.add_argument('--model_name', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model to use')
+    parser.add_argument('--model', type=str, default='clip', choices=['remoteclip', 'clip'], help='pre-trained model')
+    parser.add_argument('--model_type', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model type')
     parser.add_argument('--dataset', type=str, default='patternnet', choices=['dlrsd', 'patternnet', 'seasons'], help='choose dataset')
     parser.add_argument('--size', type=int, default=224, help='resize and crop size')
     parser.add_argument('--batch_size', type=int, default=128, help='dataloader batch size')
     args = parser.parse_args()
 
-    model, _, preprocess_images = open_clip.create_model_and_transforms(args.model_name)
-    tokenizer = open_clip.get_tokenizer(args.model_name)
+    model, _, preprocess_images = open_clip.create_model_and_transforms(args.model_type)
+    tokenizer = open_clip.get_tokenizer(args.model_type)
 
-    ckpt = torch.load(f"models/RemoteCLIP-{args.model_name}.pt", map_location="cpu")
+    if args.model == 'remoteclip':
+        ckpt = torch.load(f"models/RemoteCLIP-{args.model_type}.pt", map_location="cpu")
+    elif args.model == 'clip':
+        ckpt = torch.load(f"models/CLIP-{args.model_type}.bin", map_location="cpu")
     message = model.load_state_dict(ckpt)
     print(message)
-    print(f"{args.model_name} has been loaded!")
-
+    print(f"{args.model} {args.model_type} has been loaded!")
     model = model.cuda().eval()
 
     if args.dataset == 'dlrsd':
         full_dataset_path = "/mnt/datalv/bill/datasets/data/DLRSD/dlrsd.csv"
         full_dataset = ImageSegMapsDataset(full_dataset_path, image_transforms=preprocess_images, root='/mnt/datalv/bill/datasets/data/DLRSD/')
         full_dataloader = DataLoader(full_dataset, batch_size=args.batch_size, shuffle=False, num_workers=8, pin_memory=True, drop_last=False)
-        save_segmaps_dataset(full_dataloader, '/mnt/datalv/bill/datasets/clip_features/dlrsd/dlrsd2.pkl')
+        save_segmaps_dataset(full_dataloader, '/mnt/datalv/bill/datasets/clip_features/dlrsd/dlrsd.pkl')
     elif args.dataset == 'patternnet':
         full_dataset_path = "/mnt/datalv/bill/datasets/data/PatternNet/patternnet.csv"
         full_dataset = ImageSegMapsDataset(full_dataset_path, image_transforms=preprocess_images, withsegmaps=False, root='/mnt/datalv/bill/datasets/data/PatternNet/')
         full_dataloader = DataLoader(full_dataset, batch_size=args.batch_size, shuffle=False, num_workers=8, pin_memory=True, drop_last=False)
-        save_dataset(full_dataloader, '/mnt/datalv/bill/datasets/clip_features/patternnet/patternnet.pkl')
+        save_dataset(full_dataloader, '/mnt/datalv/bill/datasets/clip_features/patternnet/patternnet_clip.pkl')
     '''
     elif args.dataset == 'seasons':
         full_dataset_path = "./data/SSL4EO-S12/50k_images.csv"

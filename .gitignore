@@ -1,5 +1,7 @@
 checkpoints/
 models/
 __pycache__/
+patterncom/
+results/
 metrics.csv
 *.csv
