@@ -31,37 +31,24 @@ def read_dataset_features(pickle_dir):
     return all_image_features, all_labels, all_paths
 
 def read_csv(file_path):
-    # Initialize two empty lists
     image_filenames = []
     attributes = []
     attribute_values = []
-
     with open(file_path, newline='') as csvfile:
-        # Create a CSV reader object
         csvreader = csv.reader(csvfile)
-
-        # Iterate over each row in the CSV file
         for row in csvreader:
-            # Append the image path and attribute value to their respective lists
             image_filenames.append(row[0])
             attributes.append(row[1])
             attribute_values.append(row[2])
-
     return image_filenames, attributes, attribute_values
 
 def find_relative_indices(query_paths, paths):
-    # Dictionary to store paths and their indices for faster lookup
     path_index_map = {os.path.basename(path): i for i, path in enumerate(paths)}
-
-    # List to store relative indices
     relative_indices = []
-
-    # Find the index for each query path in the paths
     for query_path in query_paths:
         index = path_index_map.get(query_path)
         if index is not None:
             relative_indices.append(index)
-    
     return relative_indices
 
 def create_prompts(paired):
@@ -69,8 +56,6 @@ def create_prompts(paired):
     category_to_attributes = defaultdict(set)
     for category, attribute in paired:
         category_to_attributes[category].add(attribute)
-
-    # New list for prompts
     prompts = []
     for category, attribute in paired:
         # Get all other attributes for this category
@@ -79,9 +64,6 @@ def create_prompts(paired):
         # If there are multiple other attributes, add them all
         other_attributes = list(other_attributes)
         prompts.append(other_attributes)
-        #for other_attribute in other_attributes:
-        #    prompts.append([other_attribute])
-
     return prompts
 
 def metrics_calc2(rankings, prompt, paths, filename_to_index_map, attribute_values, at):
@@ -152,9 +134,9 @@ def metrics_calc(rankings, cls, label_counts, classes_change, query_index, at):
 
 def calculate_rankings(method, query_features, text_features, database_features, lam=0.5):
 
-    if np.array([x in method for x in ['Image', 'Average Similarities', 'Weighted Similarities', 'Add Similarities','Multiply Similarities', 'Minimum Similarity']]).any():
+    if np.array([x in method for x in ['Image', 'Average Similarities', 'Weighted Similarities', 'Add Similarities', 'Multiply Similarities', 'Minimum Similarity']]).any():
         sim_img = (query_features @ database_features.t())
-    if np.array([x in method for x in ['Text', 'Average Similarities', 'Weighted Similarities', 'Add Similarities','Multiply Similarities', 'Minimum Similarity']]).any():    
+    if np.array([x in method for x in ['Text', 'Average Similarities', 'Weighted Similarities', 'Add Similarities', 'Multiply Similarities', 'Minimum Similarity']]).any():    
         sim_text = (text_features @ database_features.t())
 
     if "norm" in method.lower():
@@ -180,7 +162,7 @@ def calculate_rankings(method, query_features, text_features, database_features,
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Validating extracted features')
-    parser.add_argument('--model', type=str, default='remoteclip', choices=['remoteclip', 'clip'], help='pre-trained model')
+    parser.add_argument('--model', type=str, default='clip', choices=['remoteclip', 'clip'], help='pre-trained model')
     parser.add_argument('--model_type', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model type')
     parser.add_argument('--dataset', type=str, default='patternnet', choices=['dlrsd', 'patternnet', 'seasons'], help='choose dataset')
     parser.add_argument('--attributes', nargs='+', default=['color', 'shape', 'density', 'quantity'], help='a list of attributes')
@@ -220,10 +202,7 @@ if __name__=="__main__":
         print('Features are loaded!')
         at = [5, 10, 15, 20]
 
-    metrics_final = {method: {f"R@{k}": [] for k in at} for method in args.methods}
-    for method in metrics_final:
-        metrics_final[method].update({f"P@{k}": [] for k in at})
-        metrics_final[method]["AP"] = []
+    metrics_final = create_metrics_final(at, args.methods)
     
     if args.dataset == 'dlrsd':
         for i in range(len(paths)):
@@ -248,11 +227,13 @@ if __name__=="__main__":
         lams = [x*0.1 for x in range(10)]
         for lam in lams:
             for attribute in args.attributes:
+                metrics_final = create_metrics_final(at, args.methods)
                 start = time.time()
                 query_filenames, attributes, attribute_values = read_csv(f'patterncom/dataset_{attribute}.csv')
                 query_labels = [re.split(r'\d', path)[0] for path in query_filenames] # or something like labels[relative_indices], should give the same
                 
                 # This part is in order to find the prompts
+                # Merge attribute with class strings for convenience (some classes might )
                 query_attributelabels = [x + query_labels[ii] for ii, x in enumerate(attributes)]
                 # We need to manually replace these, cause they are rising issues
                 if attribute == 'density':
@@ -261,8 +242,6 @@ if __name__=="__main__":
                 paired = list(zip(query_attributelabels, attribute_values))
                 # Create a prompt list with all possible attributes (per class) except the one associated with the current item
                 # This will allow each query to retrieve images with all other attributes except its own.
-                # THIS WAS FUCKING HARD TO MAKE cause some classes exist with different attributes, so I did a trick naming
-                # them together like colorairplane, sizeairplane and it's okay. TODO: fix it make it smarter
                 prompts = create_prompts(paired)
                 relative_indices = find_relative_indices(query_filenames, paths)
                 filename_to_index_map = {filename: i for i, filename in enumerate(query_filenames)}
