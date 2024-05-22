@@ -74,3 +74,11 @@ def create_metrics_final(at, methods):
         metrics_final[method].update({f"P@{k}": [] for k in at})
         metrics_final[method]["AP"] = []
     return metrics_final
+
+def create_metrics_per_prompt(prompts, at, methods):
+    metrics_per_prompt = {prompt: {method: {f"R@{k}": [] for k in at} for method in methods} for i in range(len(prompts)) for prompt in prompts[i]}
+    for prompt in metrics_per_prompt:
+        for method in metrics_per_prompt[prompt]:
+            metrics_per_prompt[prompt][method].update({f"P@{k}": [] for k in at})
+            metrics_per_prompt[prompt][method]["AP"] = []
+    return metrics_per_prompt

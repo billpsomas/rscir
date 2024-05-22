@@ -260,6 +260,7 @@ if __name__=="__main__":
                 filename_to_index_map = {filename: i for i, filename in enumerate(query_filenames)}
                 
                 text_feature_cache = {}
+                metrics_per_prompt = create_metrics_per_prompt(prompts, at, args.methods)
                 for i, idx in enumerate(relative_indices):
                     print(f'Retrieval running for query {i}', end='\r')
                     query_feature = features[idx]
@@ -282,7 +283,10 @@ if __name__=="__main__":
                             for k in at:
                                 metrics_final[method][f"R@{k}"].append(temp_metrics[f"R@{k}"])
                                 metrics_final[method][f"P@{k}"].append(temp_metrics[f"P@{k}"])
+                                metrics_per_prompt[prompt][method][f"R@{k}"].append(temp_metrics[f"R@{k}"])
+                                metrics_per_prompt[prompt][method][f"P@{k}"].append(temp_metrics[f"P@{k}"])
                             metrics_final[method]["AP"].append(temp_metrics["AP"])
+                            metrics_per_prompt[prompt][method]["AP"].append(temp_metrics["AP"])
 
                 # Calculate the average for each metric
                 for method in metrics_final:
@@ -295,3 +299,30 @@ if __name__=="__main__":
 
                 print('Writing results to CSV file...')
                 dict_to_csv(metrics_final, os.path.join('results', args.dataset + f'_metrics_{str(args.model)}_{attribute}_{str(lam)}.csv')) #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
+
+                # Calculate average metrics per prompt
+                average_metrics_per_prompt = {}
+                for prompt in metrics_per_prompt:
+                    average_metrics_per_prompt[prompt] = {}
+                    for method in metrics_per_prompt[prompt]:
+                        average_metrics_per_prompt[prompt][method] = {}
+                        for metric in metrics_per_prompt[prompt][method]:
+                            average_metrics_per_prompt[prompt][method][metric] = round(
+                                sum(metrics_per_prompt[prompt][method][metric]) / len(metrics_per_prompt[prompt][method][metric]) if metrics_per_prompt[prompt][method][metric] else 0, 2
+                            )
+
+                # Save per prompt average metrics to CSV
+                with open(os.path.join('results', args.dataset + f'_metrics_per_prompt_{str(args.model)}_{attribute}_{str(lam)}.csv'), mode='w', newline='') as file:
+                    writer = csv.writer(file)
+                    # Write the header
+                    header = ['Prompt', 'Method', 'Metric', 'Value']
+                    writer.writerow(header)
+
+                    # Write the average metrics per prompt
+                    for prompt in average_metrics_per_prompt:
+                        for method in average_metrics_per_prompt[prompt]:
+                            for metric in average_metrics_per_prompt[prompt][method]:
+                                value = average_metrics_per_prompt[prompt][method][metric]
+                                writer.writerow([prompt, method, metric, value])
+
+                print('Per prompt average metrics saved to CSV file.')
