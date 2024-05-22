@@ -137,7 +137,9 @@ if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Extracting features from the model')
     parser.add_argument('--model', type=str, default='clip', choices=['remoteclip', 'clip'], help='pre-trained model')
     parser.add_argument('--model_type', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model type')
-    parser.add_argument('--dataset', type=str, default='patternnet', choices=['dlrsd', 'patternnet', 'seasons'], help='choose dataset')
+    parser.add_argument('--dataset', type=str, default='dlrsd', choices=['dlrsd', 'patternnet', 'seasons'], help='choose dataset')
+    parser.add_argument('--dataset_path', type=str, default='/mnt/datalv/bill/datasets/data/', help='dataset root path')
+    parser.add_argument('--pickle_path', type=str, default='/mnt/datalv/bill/datasets/clip_features/', help='pickle files root path')
     parser.add_argument('--size', type=int, default=224, help='resize and crop size')
     parser.add_argument('--batch_size', type=int, default=128, help='dataloader batch size')
     args = parser.parse_args()
@@ -155,19 +157,18 @@ if __name__=="__main__":
     model = model.cuda().eval()
 
     if args.dataset == 'dlrsd':
-        full_dataset_path = "/mnt/datalv/bill/datasets/data/DLRSD/dlrsd.csv"
-        full_dataset = ImageSegMapsDataset(full_dataset_path, image_transforms=preprocess_images, root='/mnt/datalv/bill/datasets/data/DLRSD/')
+        full_dataset_csv_path = os.path.join(args.dataset_path, 'DLRSD', 'dlrsd.csv')
+        full_dataset = ImageSegMapsDataset(full_dataset_csv_path, image_transforms=preprocess_images, root=os.path.join(args.dataset_path, 'DLRSD'))
         full_dataloader = DataLoader(full_dataset, batch_size=args.batch_size, shuffle=False, num_workers=8, pin_memory=True, drop_last=False)
-        save_segmaps_dataset(full_dataloader, '/mnt/datalv/bill/datasets/clip_features/dlrsd/dlrsd.pkl')
+        if args.model == 'remoteclip':
+            save_segmaps_dataset(full_dataloader, os.path.join(args.pickle_path, 'dlrsd', 'dlrsd_remoteclip.pkl'))
+        elif args.model == 'clip':
+            save_segmaps_dataset(full_dataloader, os.path.join(args.pickle_path, 'dlrsd', 'dlrsd_clip.pkl'))
     elif args.dataset == 'patternnet':
-        full_dataset_path = "/mnt/datalv/bill/datasets/data/PatternNet/patternnet.csv"
-        full_dataset = ImageSegMapsDataset(full_dataset_path, image_transforms=preprocess_images, withsegmaps=False, root='/mnt/datalv/bill/datasets/data/PatternNet/')
+        full_dataset_path = os.path.join(args.dataset_path, 'PatternNet', 'patternnet.csv')
+        full_dataset = ImageSegMapsDataset(full_dataset_path, image_transforms=preprocess_images, withsegmaps=False, root=os.path.join(args.dataset_path, 'PatternNet'))
         full_dataloader = DataLoader(full_dataset, batch_size=args.batch_size, shuffle=False, num_workers=8, pin_memory=True, drop_last=False)
-        save_dataset(full_dataloader, '/mnt/datalv/bill/datasets/clip_features/patternnet/patternnet_clip.pkl')
-    '''
-    elif args.dataset == 'seasons':
-        full_dataset_path = "./data/SSL4EO-S12/50k_images.csv"
-        full_dataset = ImageDomainLabels(full_dataset_path, root='./data/SSL4EO-S12', transforms=preprocess_val)
-        full_dataloader = DataLoader(full_dataset, batch_size=128, shuffle=False, num_workers=8, pin_memory=True, drop_last=False)
-        save_dataset(full_dataloader, './clip_features/seasons/seasons.pkl')
-    '''
+        if args.model == 'remoteclip':
+            save_dataset(full_dataloader, os.path.join(args.pickle_path, 'patternnet', 'patternnet_remoteclip.pkl'))
+        elif args.model == 'clip':
+            save_dataset(full_dataloader, os.path.join(args.pickle_path, 'patternnet', 'patternnet_clip.pkl'))

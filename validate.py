@@ -165,7 +165,8 @@ if __name__=="__main__":
     parser.add_argument('--model', type=str, default='clip', choices=['remoteclip', 'clip'], help='pre-trained model')
     parser.add_argument('--model_type', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model type')
     parser.add_argument('--dataset', type=str, default='patternnet', choices=['dlrsd', 'patternnet', 'seasons'], help='choose dataset')
-    parser.add_argument('--attributes', nargs='+', default=['color', 'shape', 'density', 'quantity'], help='a list of attributes')
+    # ['color', 'shape', 'density', 'quantity', 'context', 'existence']
+    parser.add_argument('--attributes', nargs='+', default=['existence'], help='a list of attributes')
     parser.add_argument('--root', type=str, default='/mnt/datalv/bill/datasets/', help='dataset root directory')
     parser.add_argument('--methods', nargs='+', default=["Image only", "Text only", "Average Similarities", "Weighted Similarities Norm"], help='methods to evaluate')
     args = parser.parse_args()
@@ -181,7 +182,6 @@ if __name__=="__main__":
     print(message)
     print(f"{args.model} {args.model_type} has been loaded!")
     model = model.cuda().eval()
-
     if args.dataset == 'dlrsd':
         print('Reading features and maps...')
         if args.model == 'remoteclip':
@@ -229,16 +229,29 @@ if __name__=="__main__":
             for attribute in args.attributes:
                 metrics_final = create_metrics_final(at, args.methods)
                 start = time.time()
-                query_filenames, attributes, attribute_values = read_csv(f'patterncom/dataset_{attribute}.csv')
+                query_filenames, attributes, attribute_values = read_csv(f'patterncom/v2/dataset_{attribute}.csv')
                 query_labels = [re.split(r'\d', path)[0] for path in query_filenames] # or something like labels[relative_indices], should give the same
                 
                 # This part is in order to find the prompts
-                # Merge attribute with class strings for convenience (some classes might )
+                # Merge attribute with class strings for convenience
                 query_attributelabels = [x + query_labels[ii] for ii, x in enumerate(attributes)]
                 # We need to manually replace these, cause they are rising issues
                 if attribute == 'density':
                     query_attributelabels = [x.replace('densitydenseresidential', 'densityresidential') for x in query_attributelabels]
                     query_attributelabels = [x.replace('densitysparseresidential', 'densityresidential') for x in query_attributelabels]
+                    query_attributelabels = [x.replace('densitychristmastreefarm', 'densitytreecover') for x in query_attributelabels]
+                    query_attributelabels = [x.replace('densityforest', 'densitytreecover') for x in query_attributelabels]
+                elif attribute == 'shape':
+                    query_attributelabels = [x.replace('shapeclosedroad', 'shaperoad') for x in query_attributelabels]
+                    query_attributelabels = [x.replace('shapeintersection', 'shaperoad') for x in query_attributelabels]
+                elif attribute == 'context':
+                    query_attributelabels = [x.replace('contextbridge', 'contextroadpass') for x in query_attributelabels]
+                    query_attributelabels = [x.replace('contextoverpass', 'contextroadpass') for x in query_attributelabels]
+                elif attribute == 'existence':
+                    query_attributelabels = [x.replace('existenceferryterminal', 'existencepier') for x in query_attributelabels]
+                    query_attributelabels = [x.replace('existenceharbor', 'existencepier') for x in query_attributelabels]
+                    query_attributelabels = [x.replace('existenceparkingspace', 'existenceparking') for x in query_attributelabels]
+                    query_attributelabels = [x.replace('existenceparkinglot', 'existenceparking') for x in query_attributelabels]
                 paired = list(zip(query_attributelabels, attribute_values))
                 # Create a prompt list with all possible attributes (per class) except the one associated with the current item
                 # This will allow each query to retrieve images with all other attributes except its own.
@@ -281,4 +294,4 @@ if __name__=="__main__":
                 timer(start, end)
 
                 print('Writing results to CSV file...')
-                dict_to_csv(metrics_final, 'results/' + args.dataset + f'_metrics_{str(args.model)}_{attribute}_{str(lam)}.csv') #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
+                dict_to_csv(metrics_final, os.path.join('results', args.dataset + f'_metrics_{str(args.model)}_{attribute}_{str(lam)}.csv')) #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
