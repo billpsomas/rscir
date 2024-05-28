@@ -1,5 +1,9 @@
-# Composed Image Retieval for Remote Sensing
+# Composed Image Retrieval for Remote Sensing
+
 Official PyTorch implementation and benchmark dataset for IGARSS 2024 ORAL paper. [[`arXiv`](https://arxiv.org/abs/2405.15587)]
+
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 
 <div align="center">
   <img width="100%" alt="WeiCom" src=".github/method.PNG">
