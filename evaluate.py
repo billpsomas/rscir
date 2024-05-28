@@ -205,7 +205,7 @@ if __name__=="__main__":
                 print(metrics_final)
                 end = time.time()
                 timer(start, end)
-                breakpoint()
+
                 # Save metrics to CSV file
                 print('Writing results to CSV file...')
                 results_dir = 'results'
