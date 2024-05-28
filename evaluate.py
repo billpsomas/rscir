@@ -8,19 +8,12 @@ import argparse
 from PIL import Image
 import re
 from collections import defaultdict
+from tqdm import tqdm
+
 from utils import *
 
 
-def read_segmaps_dataset_features(pickle_dir):
-    with open(pickle_dir, 'rb') as f:
-        data = pickle.load(f)
-    all_image_features = torch.from_numpy(data['feats'].astype("float32")).float().to('cuda')
-    all_maps = data['maps']
-    all_label_counts = data['label_counts']
-    all_additional_classes = data['additional_classes']
-    all_paths = data['paths']
-    return all_image_features, all_maps, all_label_counts, all_additional_classes, all_paths
-
+# Function to read features from a pickle file
 def read_dataset_features(pickle_dir):
     with open(pickle_dir, 'rb') as f:
         data = pickle.load(f)
@@ -29,6 +22,7 @@ def read_dataset_features(pickle_dir):
     all_paths = data['paths']
     return all_image_features, all_labels, all_paths
 
+# Function to read CSV files
 def read_csv(file_path):
     image_filenames = []
     attributes = []
@@ -41,6 +35,7 @@ def read_csv(file_path):
             attribute_values.append(row[2])
     return image_filenames, attributes, attribute_values
 
+# Function to find relative indices of query paths in the dataset paths
 def find_relative_indices(query_paths, paths):
     path_index_map = {os.path.basename(path): i for i, path in enumerate(paths)}
     relative_indices = []
@@ -50,6 +45,7 @@ def find_relative_indices(query_paths, paths):
             relative_indices.append(index)
     return relative_indices
 
+# Function to create prompts for attribute evaluation
 def create_prompts(paired):
     # Store attributes for each category
     category_to_attributes = defaultdict(set)
@@ -65,14 +61,13 @@ def create_prompts(paired):
         prompts.append(other_attributes)
     return prompts
 
-def metrics_calc2(rankings, prompt, paths, filename_to_index_map, attribute_values, at):
+# Function to calculate various metrics for the retrieved results
+def metrics_calc(rankings, prompt, paths, filename_to_index_map, attribute_values, at):
     metrics = {}
     # Convert rankings to filenames to find their corresponding attribute values
     retrieved_filenames = [os.path.basename(paths[idx]) for idx in rankings]
-
     # Find indices in query_filenames using the precomputed map
     retrieved_indices = [filename_to_index_map.get(filename, -1) for filename in retrieved_filenames]
-
     # Determine if each retrieval is relevant (True or False)
     is_relevant = [attribute_values[idx] == prompt if idx != -1 else False for idx in retrieved_indices]
 
@@ -99,38 +94,7 @@ def metrics_calc2(rankings, prompt, paths, filename_to_index_map, attribute_valu
 
     return metrics
 
-
-def metrics_calc(rankings, cls, label_counts, classes_change, query_index, at):
-    metrics = {}
-    query_classes = set(key for key, val in label_counts[query_index].items() if val > 0)
-    cls_id = list(classes_change.keys())[list(classes_change.values()).index(cls)]
-    query_classes.add(cls_id)  # Add the additional class
-
-    relevant_ranking_indices = [idx for idx in range(len(rankings)) if query_classes.issubset(set(key for key, val in label_counts[rankings[idx]].items() if val > 0))]
-    
-    precisions = []
-    for idx, rank in enumerate(relevant_ranking_indices, start=1):
-        precision_at_rank = idx / (rank + 1)  # rank is zero-indexed
-        precisions.append(precision_at_rank)
-
-    ap = sum(precisions) / len(precisions) if precisions else 0
-    metrics["AP"] = round(ap*100, 2)
-
-    for k in at:
-        top_k_indices = rankings[:k]
-
-        # Count how many retrieved items are relevant
-        relevant_count = sum(idx in relevant_ranking_indices for idx in top_k_indices)
-
-        # Calculate Recall@k and Precision@k
-        recall_at_k = relevant_count / len(query_classes) if query_classes else 0
-        precision_at_k = relevant_count / k if k else 0
-
-        metrics[f"R@{k}"] = round(recall_at_k*100, 2)
-        metrics[f"P@{k}"] = round(precision_at_k*100, 2)
-
-    return metrics
-
+# Function to calculate rankings based on the selected method
 def calculate_rankings(method, query_features, text_features, database_features, lam=0.5):
 
     if np.array([x in method for x in ['Image', 'Average Similarities', 'Weighted Similarities', 'Add Similarities', 'Multiply Similarities', 'Minimum Similarity']]).any():
@@ -164,65 +128,55 @@ if __name__=="__main__":
     parser.add_argument('--model_name', type=str, default='remoteclip', choices=['remoteclip', 'clip'], help='pre-trained model')
     parser.add_argument('--model_type', type=str, default='ViT-L-14', choices=['RN50', 'ViT-B-32', 'ViT-L-14'], help='pre-trained model type')
     parser.add_argument('--dataset', type=str, default='patternnet', choices=['dlrsd', 'patternnet', 'seasons'], help='choose dataset')
-    parser.add_argument('--attributes', nargs='+', default=['color'], choices=['color', 'shape', 'density', 'quantity', 'context', 'existence'], help='a list of attributes')
+    parser.add_argument('--attributes', nargs='+', default=['color', 'shape', 'density', 'quantity', 'context', 'existence'], choices=['color', 'shape', 'density', 'quantity', 'context', 'existence'], help='a list of attributes')
     parser.add_argument('--dataset_path', type=str, default='/mnt/datalv/bill/datasets/data/PatternNet/', help='PatternNet dataset path')
     parser.add_argument('--methods', nargs='+', default=["Weighted Similarities Norm"], choices=["Image only", "Text only", "Average Similarities", "Weighted Similarities Norm"], help='methods to evaluate')
+    parser.add_argument('--lambdas', type=str, default='0.5', help='comma-separated list of lambda values')
     args = parser.parse_args()
+
+    # Convert lambdas argument to a list of floats
+    lambdas = list(map(float, args.lambdas.split(',')))
 
     # Load model and tokenizer
     model, _, tokenizer = load_model(args.model_name, args.model_type)
 
-    # Read features
+    # Read features from the specified dataset
     if args.dataset == 'patternnet':
         print('Reading features...')
         features, labels, paths = read_dataset_features(os.path.join(args.dataset_path, 'features', f'patternnet_{args.model_name}.pkl'))
         print('Features are loaded!')
         at = [5, 10, 15, 20]
 
-    # Create metrics dict
+    # Initialize metrics storage
     metrics_final = create_metrics_final(at, args.methods)
+
     if args.dataset == 'patternnet':
-        #lams = [x*0.1 for x in range(10)]
-        lams = [0.5]
-        for lam in lams:
+        for lam in lambdas:
             for attribute in args.attributes:
                 metrics_final = create_metrics_final(at, args.methods)
                 start = time.time()
-                query_filenames, attributes, attribute_values = read_csv(f'patterncom/v2/dataset_{attribute}.csv')
+                
+                # Read query data from CSV file
+                query_filenames, attributes, attribute_values = read_csv(os.path.join(args.dataset_path, 'PatternCom', f'{attribute}.csv'))
                 query_labels = [re.split(r'\d', path)[0] for path in query_filenames] # or something like labels[relative_indices], should give the same
                 
-                # This part is in order to find the prompts
-                # Merge attribute with class strings for convenience
+                # Fix query attribute labels
                 query_attributelabels = [x + query_labels[ii] for ii, x in enumerate(attributes)]
-                # We need to manually replace these, cause they are rising issues
-                if attribute == 'density':
-                    query_attributelabels = [x.replace('densitydenseresidential', 'densityresidential') for x in query_attributelabels]
-                    query_attributelabels = [x.replace('densitysparseresidential', 'densityresidential') for x in query_attributelabels]
-                    query_attributelabels = [x.replace('densitychristmastreefarm', 'densitytreecover') for x in query_attributelabels]
-                    query_attributelabels = [x.replace('densityforest', 'densitytreecover') for x in query_attributelabels]
-                elif attribute == 'shape':
-                    query_attributelabels = [x.replace('shapeclosedroad', 'shaperoad') for x in query_attributelabels]
-                    query_attributelabels = [x.replace('shapeintersection', 'shaperoad') for x in query_attributelabels]
-                elif attribute == 'context':
-                    query_attributelabels = [x.replace('contextbridge', 'contextroadpass') for x in query_attributelabels]
-                    query_attributelabels = [x.replace('contextoverpass', 'contextroadpass') for x in query_attributelabels]
-                elif attribute == 'existence':
-                    query_attributelabels = [x.replace('existenceferryterminal', 'existencepier') for x in query_attributelabels]
-                    query_attributelabels = [x.replace('existenceharbor', 'existencepier') for x in query_attributelabels]
-                    query_attributelabels = [x.replace('existenceparkingspace', 'existenceparking') for x in query_attributelabels]
-                    query_attributelabels = [x.replace('existenceparkinglot', 'existenceparking') for x in query_attributelabels]
+                query_attributelabels = fix_query_attributelabels(attribute, query_attributelabels)
+
+                # Pair attribute labels with attribute values
                 paired = list(zip(query_attributelabels, attribute_values))
-                # Create a prompt list with all possible attributes (per class) except the one associated with the current item
-                # This will allow each query to retrieve images with all other attributes except its own.
+
+                # Create prompts based on paired data
                 prompts = create_prompts(paired)
                 relative_indices = find_relative_indices(query_filenames, paths)
                 filename_to_index_map = {filename: i for i, filename in enumerate(query_filenames)}
-                
+
+                # Cache text features
                 text_feature_cache = {}
-                for i, idx in enumerate(relative_indices):
-                    print(f'Retrieval running for query {i}', end='\r')
+                for i, idx in enumerate(tqdm(relative_indices, desc="Processing queries")):
                     query_feature = features[idx]
-                    for prompt in prompts[i]:
+                    for prompt in tqdm(prompts[i], desc="Processing prompts", leave=False):
                         # Check if the text feature for this prompt is already computed
                         if prompt not in text_feature_cache:
                             # If not, compute and cache it
@@ -235,7 +189,7 @@ if __name__=="__main__":
                             text_feature = text_feature_cache[prompt]
                         for method in args.methods:
                             rankings = calculate_rankings(method, query_feature, text_feature, features, lam)
-                            temp_metrics = metrics_calc2(rankings, prompt, paths, filename_to_index_map, attribute_values, at)
+                            temp_metrics = metrics_calc(rankings, prompt, paths, filename_to_index_map, attribute_values, at)
 
                             # Accumulate metrics for each method
                             for k in at:
@@ -243,7 +197,7 @@ if __name__=="__main__":
                                 metrics_final[method][f"P@{k}"].append(temp_metrics[f"P@{k}"])
                             metrics_final[method]["AP"].append(temp_metrics["AP"])
 
-                # Calculate the average for each metric
+                # Calculate average metrics
                 for method in metrics_final:
                     for metric in metrics_final[method]:
                         metrics_final[method][metric] = round(sum(metrics_final[method][metric]) / len(metrics_final[method][metric]) if metrics_final[method][metric] else 0, 2)
@@ -251,6 +205,11 @@ if __name__=="__main__":
                 print(metrics_final)
                 end = time.time()
                 timer(start, end)
-
+                breakpoint()
+                # Save metrics to CSV file
                 print('Writing results to CSV file...')
-                dict_to_csv(metrics_final, os.path.join('results', args.dataset + f'_metrics_{str(args.model)}_{attribute}_{str(lam)}.csv')) #time.strftime("%Y_%m_%d_%H_%M_%S")+'.csv')
+                results_dir = 'results'
+                if not os.path.exists(results_dir):
+                    os.makedirs(results_dir)
+                results_file_path = os.path.join(results_dir, f'{args.dataset}_metrics_{args.model_name}_lambda{lam}_{attribute}.csv')
+                dict_to_csv(metrics_final, results_file_path)

@@ -98,3 +98,23 @@ def create_metrics_per_prompt(prompts, at, methods):
             metrics_per_prompt[prompt][method].update({f"P@{k}": [] for k in at})
             metrics_per_prompt[prompt][method]["AP"] = []
     return metrics_per_prompt
+
+# Function to fix specific attribute labels
+def fix_query_attributelabels(attribute, query_attributelabels):
+    if attribute == 'density':
+        query_attributelabels = [x.replace('densitydenseresidential', 'densityresidential') for x in query_attributelabels]
+        query_attributelabels = [x.replace('densitysparseresidential', 'densityresidential') for x in query_attributelabels]
+        query_attributelabels = [x.replace('densitychristmastreefarm', 'densitytreecover') for x in query_attributelabels]
+        query_attributelabels = [x.replace('densityforest', 'densitytreecover') for x in query_attributelabels]
+    elif attribute == 'shape':
+        query_attributelabels = [x.replace('shapeclosedroad', 'shaperoad') for x in query_attributelabels]
+        query_attributelabels = [x.replace('shapeintersection', 'shaperoad') for x in query_attributelabels]
+    elif attribute == 'context':
+        query_attributelabels = [x.replace('contextbridge', 'contextroadpass') for x in query_attributelabels]
+        query_attributelabels = [x.replace('contextoverpass', 'contextroadpass') for x in query_attributelabels]
+    elif attribute == 'existence':
+        query_attributelabels = [x.replace('existenceferryterminal', 'existencepier') for x in query_attributelabels]
+        query_attributelabels = [x.replace('existenceharbor', 'existencepier') for x in query_attributelabels]
+        query_attributelabels = [x.replace('existenceparkingspace', 'existenceparking') for x in query_attributelabels]
+        query_attributelabels = [x.replace('existenceparkinglot', 'existenceparking') for x in query_attributelabels]
+    return query_attributelabels

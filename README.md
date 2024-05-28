@@ -38,7 +38,7 @@ In summary, we make the following contributions:
 
 ## Pre-trained models
 
-For our experiments, you need to download [CLIP]() and [RemoteCLIP](), both with a ViT-L/14 image encoder. After downloading, place them inside the `models/` folder.
+For our experiments, you need to download [CLIP](https://drive.google.com/file/d/1F9Kk7PZXhkv1KkCN0CCrctE5nnS1DmUv/view?usp=sharing) and [RemoteCLIP](https://drive.google.com/file/d/1zAqlxASKvNTFQB-ftf6Wn42nFX5IeTKB/view?usp=sharing), both with a ViT-L/14 image encoder. After downloading, place them inside the `models/` folder.
 
 ## Environment
 
@@ -98,3 +98,67 @@ PatterNet/
 
 ## Evaluation
 
+### Baselines
+
+To evaluate extracted features on PatternCom RSCIR using baselines, run:
+
+```python
+python evaluate.py --model_name clip --dataset_path /path/to/PatternNet/ --methods "Image only" "Text only" "Average Similarities"
+```
+
+Replace `clip` with `remoteclip` for RemoteCLIP features.
+
+### WeiCom
+
+To evaluate extracted features on PatternCom RSCIR using WeiCom, run:
+
+```python
+python evaluate.py --model_name clip --dataset_path /path/to/PatternNet/ --methods "Weighted Similarities Norm" --lambdas 0.5
+```
+
+Replace `clip` with `remoteclip` for RemoteCLIP features. 
+
+Following our ablation, you can use optimal `--lambdas 0.3` for CLIP, `--lambdas 0.6` for RemoteCLIP. 
+
+### Results
+
+Running the code as described above, you should get the following results. In these tables, for each attribute value of an attribute (e.g. "rectangular" of Shape), the average mAP over all the rest attribute values (e.g. "oval" of Shape) is shown. `Avg` represents the average mAP over all combinations.
+
+#### CLIP
+
+| **Method**               | **Color** | **Context** | **Density** | **Existence** | **Quantity** | **Shape** | **Avg** |
+|--------------------------|:---------:|:-----------:|:-----------:|:-------------:|:------------:|:---------:|:-------:|
+| Text                     | 14.14     | 4.83        | 3.58        | 4.38          | 6.30         | 6.22      | 6.58    |
+| Image                    | 11.80     | 8.32        | 13.49       | 13.50         | 6.30         | 15.76     | 11.53   |
+| Text & Image             | 19.59     | 11.02       | 15.87       | **13.77**     | 7.82         | 21.38     | 14.91   |
+| **$WeiCom_{\lambda=0.5}$** | **41.15** | 17.45       | 16.49       | 9.24          | 18.00        | 23.97     | 21.05   |
+| **$WeiCom_{\lambda=0.3}$** | 40.71     | **20.97**   | **22.07**   | 12.07         | **18.40**    | **26.22** | **23.41** |
+
+#### RemoteCLIP
+
+| **Method**               | **Color** | **Context** | **Density** | **Existence** | **Quantity** | **Shape** | **Avg** |
+|--------------------------|:---------:|:-----------:|:-----------:|:-------------:|:------------:|:---------:|:-------:|
+| Text                     | 11.89     | 8.87        | 22.16       | 12.49         | 12.56        | 24.12     | 16.99   |
+| Image                    | 11.72     | 6.62        | 15.11       | 9.29          | 5.41         | 15.18     | 11.19   |
+| Text & Image             | 19.84     | 10.01       | 18.45       | 10.56         | 6.23         | 19.63     | 14.85   |
+| **$WeiCom_{\lambda=0.5}$** | **40.08** | 31.45       | 39.94       | 14.27         | 14.14        | 29.78     | 28.28   |
+| **$WeiCom_{\lambda=0.6}$** | 38.20     | **31.59**   | **41.56**   | **14.79**     | **14.53**    | **31.24** | **28.65** |
+
+## Acknowledgement
+[NTUA](https://www.ntua.gr/en/) thanks [NVIDIA](https://www.nvidia.com/en-us/) for the support with the donation of GPU hardware.
+
+## License
+This repository is released under the Apache 2.0 license as found in the [LICENSE](LICENSE) file.
+
+## Citation
+If you find this repository useful, please consider giving a star 🌟 and citation:
+```
+@misc{psomas2024composed,
+      title={Composed Image Retrieval for Remote Sensing}, 
+      author={Bill Psomas and Ioannis Kakogeorgiou and Nikos Efthymiadis and Giorgos Tolias and Ondrej Chum and Yannis Avrithis and Konstantinos Karantzalos},
+      year={2024},
+      eprint={2405.15587},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
