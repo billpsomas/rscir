@@ -2,6 +2,22 @@ import torch
 import numpy as np
 from PIL import Image
 import csv
+import open_clip
+
+def load_model(model_name, model_type):
+    model, _, preprocess_images = open_clip.create_model_and_transforms(model_type)
+    tokenizer = open_clip.get_tokenizer(model_type)
+
+    if model_name == 'remoteclip':
+        ckpt = torch.load(f"models/RemoteCLIP-{model_type}.pt", map_location="cpu")
+    elif model_name == 'clip':
+        ckpt = torch.load(f"models/CLIP-{model_type}.bin", map_location="cpu")
+    message = model.load_state_dict(ckpt)
+    print(message)
+    print(f"{model_name} {model_type} has been loaded!")
+    model = model.cuda().eval()
+
+    return model, preprocess_images, tokenizer
 
 def replace_class_names(additional_classes, classes_change):
     named_classes_list = []

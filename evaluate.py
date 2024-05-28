@@ -188,7 +188,7 @@ if __name__=="__main__":
             for attribute in args.attributes:
                 metrics_final = create_metrics_final(at, args.methods)
                 start = time.time()
-                query_filenames, attributes, attribute_values = read_csv(os.path.join('PatternCom', f'{attribute}.csv'))
+                query_filenames, attributes, attribute_values = read_csv(f'patterncom/v2/dataset_{attribute}.csv')
                 query_labels = [re.split(r'\d', path)[0] for path in query_filenames] # or something like labels[relative_indices], should give the same
                 
                 # This part is in order to find the prompts
