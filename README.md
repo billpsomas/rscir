@@ -44,6 +44,22 @@ In summary, we make the following contributions:
 
 For our experiments, you need to download [CLIP](https://drive.google.com/file/d/1F9Kk7PZXhkv1KkCN0CCrctE5nnS1DmUv/view?usp=sharing) and [RemoteCLIP](https://drive.google.com/file/d/1zAqlxASKvNTFQB-ftf6Wn42nFX5IeTKB/view?usp=sharing), both with a ViT-L/14 image encoder. After downloading, place them inside the `models/` folder.
 
+This code folder structure should then look like this:
+
+```
+rscir/
+    |-- .github/
+    |-- models/
+        |-- CLIP-ViT-L-14.bin
+        |-- RemoteCLIP-ViT-L-14.pt
+    |-- .gitignore
+    |-- LICENSE
+    |-- README.md
+    |-- evaluate.py
+    |-- extract_features.py
+    |-- utils.py
+```
+
 ## Environment
 
 Create this environment for our experiments:
