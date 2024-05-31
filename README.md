@@ -4,6 +4,7 @@ Official PyTorch implementation and benchmark dataset for IGARSS 2024 ORAL paper
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/composed-image-retrieval-for-remote-sensing/composed-image-retrieval-coir-on-pattercom)](https://paperswithcode.com/sota/composed-image-retrieval-coir-on-pattercom?p=composed-image-retrieval-for-remote-sensing)
 
 <div align="center">
   <img width="100%" alt="WeiCom" src=".github/method.PNG">
