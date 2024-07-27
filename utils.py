@@ -99,13 +99,29 @@ def create_metrics_per_prompt(prompts, at, methods):
             metrics_per_prompt[prompt][method]["AP"] = []
     return metrics_per_prompt
 
+# Class mapping for merging specific classes
+class_mapping = {
+    'denseresidential': 'residential',
+    'sparseresidential': 'residential',
+    'closedroad': 'road',
+    'intersection': 'road',
+    'bridge': 'roadpass',
+    'overpass': 'roadpass',
+    'ferryterminal': 'pier',
+    'harbor': 'pier',
+    'parkingspace': 'parking',
+    'parkinglot': 'parking'
+}
+
+# Function to apply class mapping
+def apply_class_mapping(label, class_mapping):
+    return class_mapping.get(label, label)
+
 # Function to fix specific attribute labels
 def fix_query_attributelabels(attribute, query_attributelabels):
     if attribute == 'density':
         query_attributelabels = [x.replace('densitydenseresidential', 'densityresidential') for x in query_attributelabels]
         query_attributelabels = [x.replace('densitysparseresidential', 'densityresidential') for x in query_attributelabels]
-        query_attributelabels = [x.replace('densitychristmastreefarm', 'densitytreecover') for x in query_attributelabels]
-        query_attributelabels = [x.replace('densityforest', 'densitytreecover') for x in query_attributelabels]
     elif attribute == 'shape':
         query_attributelabels = [x.replace('shapeclosedroad', 'shaperoad') for x in query_attributelabels]
         query_attributelabels = [x.replace('shapeintersection', 'shaperoad') for x in query_attributelabels]

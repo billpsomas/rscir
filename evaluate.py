@@ -18,7 +18,7 @@ def read_dataset_features(pickle_dir):
     with open(pickle_dir, 'rb') as f:
         data = pickle.load(f)
     all_image_features = torch.from_numpy(data['feats'].astype("float32")).float().to('cuda')
-    all_labels = data['labels']
+    all_labels = [label.replace('_', '') for label in data['labels']]
     all_paths = data['paths']
     return all_image_features, all_labels, all_paths
 
@@ -62,14 +62,19 @@ def create_prompts(paired):
     return prompts
 
 # Function to calculate various metrics for the retrieved results
-def metrics_calc(rankings, prompt, paths, filename_to_index_map, attribute_values, at):
+def metrics_calc(rankings, prompt, paths, filename_to_index_map, attribute_values, at, query_class, query_labels):
     metrics = {}
     # Convert rankings to filenames to find their corresponding attribute values
     retrieved_filenames = [os.path.basename(paths[idx]) for idx in rankings]
     # Find indices in query_filenames using the precomputed map
     retrieved_indices = [filename_to_index_map.get(filename, -1) for filename in retrieved_filenames]
+    # Map original query class -> our query class
+    query_class_mapped = apply_class_mapping(query_class, class_mapping)
+    
     # Determine if each retrieval is relevant (True or False)
-    is_relevant = [attribute_values[idx] == prompt if idx != -1 else False for idx in retrieved_indices]
+    # Take into account both class (has to be the same as query image) 
+    # and attribute (has to be the same as query text - prompt)
+    is_relevant = [attribute_values[idx] == prompt and apply_class_mapping(query_labels[idx], class_mapping) == query_class_mapped if idx != -1 else False for idx in retrieved_indices]
 
     # Calculate Average Precision (AP)
     precisions = []
@@ -176,6 +181,7 @@ if __name__=="__main__":
                 text_feature_cache = {}
                 for i, idx in enumerate(tqdm(relative_indices, desc="Processing queries")):
                     query_feature = features[idx]
+                    query_class = query_labels[i]  # Get the original class of the query image
                     for prompt in tqdm(prompts[i], desc="Processing prompts", leave=False):
                         # Check if the text feature for this prompt is already computed
                         if prompt not in text_feature_cache:
@@ -189,7 +195,7 @@ if __name__=="__main__":
                             text_feature = text_feature_cache[prompt]
                         for method in args.methods:
                             rankings = calculate_rankings(method, query_feature, text_feature, features, lam)
-                            temp_metrics = metrics_calc(rankings, prompt, paths, filename_to_index_map, attribute_values, at)
+                            temp_metrics = metrics_calc(rankings, prompt, paths, filename_to_index_map, attribute_values, at, query_class, query_labels)
 
                             # Accumulate metrics for each method
                             for k in at:
