@@ -177,7 +177,7 @@ If you find this repository useful, please consider giving a star 🌟 and citat
 @inproceedings{psomas2024composed,
       title={Composed Image Retrieval for Remote Sensing}, 
       author={Psomas, B. and Kakogeorgiou, I. and Efthymiadis, N. and Tolias, G. and Chum, O. and Avrithis, Y. and Karantzalos, K.},
-      booktitle={IGARSS 2023 - 2023 IEEE International Geoscience and Remote Sensing Symposium}, 
+      booktitle={IGARSS 2024 - 2024 IEEE International Geoscience and Remote Sensing Symposium}, 
       year={2024}
 }
 ```
