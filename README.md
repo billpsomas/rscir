@@ -174,12 +174,10 @@ This repository is released under the Apache 2.0 license as found in the [LICENS
 ## Citation
 If you find this repository useful, please consider giving a star 🌟 and citation:
 ```
-@misc{psomas2024composed,
+@inproceedings{psomas2024composed,
       title={Composed Image Retrieval for Remote Sensing}, 
-      author={Bill Psomas and Ioannis Kakogeorgiou and Nikos Efthymiadis and Giorgos Tolias and Ondrej Chum and Yannis Avrithis and Konstantinos Karantzalos},
-      year={2024},
-      eprint={2405.15587},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+      author={Psomas, B. and Kakogeorgiou, I. and Efthymiadis, N. and Tolias, G. and Chum, O. and Avrithis, Y. and Karantzalos, K.},
+      booktitle={IGARSS 2023 - 2023 IEEE International Geoscience and Remote Sensing Symposium}, 
+      year={2024}
 }
 ```

@@ -141,6 +141,8 @@ if __name__=="__main__":
 
     # Convert lambdas argument to a list of floats
     lambdas = list(map(float, args.lambdas.split(',')))
+    # For lambda ablation, uncomment the line:
+    # lambdas = [x/10 for x in range(0, 11, 1)]
 
     # Load model and tokenizer
     model, _, tokenizer = load_model(args.model_name, args.model_type)
