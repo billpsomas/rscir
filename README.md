@@ -68,7 +68,7 @@ Create this environment for our experiments:
 ```bash
 conda create -n rscir python=3.9 -y
 conda activate rscir
-conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
+conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
 pip install open_clip_torch
 ```
 
