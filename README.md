@@ -74,14 +74,14 @@ pip install open_clip_torch
 
 ## Dataset
 
-PatterCom is based on [PatterNet](https://sites.google.com/view/zhouwx/dataset), a large-scale, high-resolution remote sensing dataset that comprises 38 classes, with each class containing 800 images of 256×256 pixels. 
+PatterCom is based on [PatternNet](https://sites.google.com/view/zhouwx/dataset), a large-scale, high-resolution remote sensing dataset that comprises 38 classes, with each class containing 800 images of 256×256 pixels. 
 
-Download PatterNet from [here](https://nuisteducn1-my.sharepoint.com/:u:/g/personal/zhouwx_nuist_edu_cn/EYSPYqBztbBBqS27B7uM_mEB3R9maNJze8M1Qg9Q6cnPBQ?e=MSf977) and unzip it into `PatterNet/` folder. Download `patternnet.csv` for [here](https://drive.google.com/file/d/1sIdH0DVR2JxCEYQgp8041sUOYfLdGgyV/view?usp=sharing) and place it in the same folder too. Finally, download PatternCom from [here](https://drive.google.com/drive/folders/1NP2Ryj4V2L_wwInQB6HjzPDPRH2k0J5U?usp=sharing) and place it into the same folder too.
+Download PatternNet from [here](https://nuisteducn1-my.sharepoint.com/:u:/g/personal/zhouwx_nuist_edu_cn/EYSPYqBztbBBqS27B7uM_mEB3R9maNJze8M1Qg9Q6cnPBQ?e=MSf977) and unzip it into `PatternNet/` folder. Download `patternnet.csv` for [here](https://drive.google.com/file/d/1sIdH0DVR2JxCEYQgp8041sUOYfLdGgyV/view?usp=sharing) and place it in the same folder too. Finally, download PatternCom from [here](https://drive.google.com/drive/folders/1NP2Ryj4V2L_wwInQB6HjzPDPRH2k0J5U?usp=sharing) and place it into the same folder too.
 
-The `PatterNet/` folder structure should look like this:
+The `PatternNet/` folder structure should look like this:
 
 ```
-PatterNet/
+PatternNet/
     |-- images/
     |-- PatternCom/
         |-- color.csv
@@ -104,10 +104,10 @@ python extract_features.py --model_name clip --dataset_path /path/to/PatternNet/
 
 Replace `clip` with `remoteclip` for RemoteCLIP features.
 
-Note that this will save features as pickle files inside `PatterNet/features/` folder. Thus, the new folder structure should look like this:
+Note that this will save features as pickle files inside `PatternNet/features/` folder. Thus, the new folder structure should look like this:
 
 ```
-PatterNet/
+PatternNet/
     |-- features/
         |-- patternnet_clip.pkl
         |-- patternnet_remoteclip.pkl
