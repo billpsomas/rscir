@@ -72,7 +72,7 @@ conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvi
 pip install open_clip_torch
 ```
 
-## Dataset
+## Datasets
 
 PatterCom is based on [PatternNet](https://sites.google.com/view/zhouwx/dataset), a large-scale, high-resolution remote sensing dataset that comprises 38 classes, with each class containing 800 images of 256×256 pixels. 
 
@@ -93,6 +93,19 @@ PatternNet/
     |-- patternnet.csv
     |-- patternnet_description.pdf
 ```
+
+### xView2-CIR
+
+The `xview2_cir.csv` file contains the list of images sampled from the [xView2 dataset](https://xview2.org/). For each sample, the file includes:
+
+- the source pre-disaster image,
+- the default text query,
+- two alternative text queries used in ablation study,
+- and the corresponding target image path.
+
+### LEVIR-CC
+
+The LEVIR-CC dataset can be found [here](https://github.com/Chen-Yang-Liu/RSICC).
 
 ## Feature Extraction
 
