@@ -1,0 +1,292 @@
+image,query_default,query_alt1,query_alt2,target
+test/images/mexico-earthquake_00000063_pre_disaster.tif,post earthquake,earthquake damaged area,seismic damage,test/images/mexico-earthquake_00000063_post_disaster.tif
+test/images/mexico-earthquake_00000076_pre_disaster.tif,post earthquake,earthquake damaged area,seismic damage,test/images/mexico-earthquake_00000076_post_disaster.tif
+test/images/mexico-earthquake_00000180_pre_disaster.tif,post earthquake,earthquake damaged area,seismic damage,test/images/mexico-earthquake_00000180_post_disaster.tif
+test/images/mexico-earthquake_00000183_pre_disaster.tif,post earthquake,earthquake damaged area,seismic damage,test/images/mexico-earthquake_00000183_post_disaster.tif
+test/images/mexico-earthquake_00000187_pre_disaster.tif,post earthquake,earthquake damaged area,seismic damage,test/images/mexico-earthquake_00000187_post_disaster.tif
+test/images/santa-rosa-wildfire_00000021_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000021_post_disaster.tif
+test/images/santa-rosa-wildfire_00000028_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000028_post_disaster.tif
+test/images/santa-rosa-wildfire_00000038_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000038_post_disaster.tif
+test/images/santa-rosa-wildfire_00000089_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000089_post_disaster.tif
+test/images/santa-rosa-wildfire_00000099_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000099_post_disaster.tif
+test/images/santa-rosa-wildfire_00000133_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000133_post_disaster.tif
+test/images/santa-rosa-wildfire_00000257_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000257_post_disaster.tif
+test/images/santa-rosa-wildfire_00000269_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000269_post_disaster.tif
+test/images/santa-rosa-wildfire_00000289_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000289_post_disaster.tif
+test/images/santa-rosa-wildfire_00000290_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000290_post_disaster.tif
+test/images/santa-rosa-wildfire_00000305_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000305_post_disaster.tif
+test/images/santa-rosa-wildfire_00000343_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000343_post_disaster.tif
+test/images/santa-rosa-wildfire_00000354_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/santa-rosa-wildfire_00000354_post_disaster.tif
+test/images/socal-fire_00000016_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000016_post_disaster.tif
+test/images/socal-fire_00000049_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000049_post_disaster.tif
+test/images/socal-fire_00000074_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000074_post_disaster.tif
+test/images/socal-fire_00000145_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000145_post_disaster.tif
+test/images/socal-fire_00000148_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000148_post_disaster.tif
+test/images/socal-fire_00000161_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000161_post_disaster.tif
+test/images/socal-fire_00000179_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000179_post_disaster.tif
+test/images/socal-fire_00000198_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000198_post_disaster.tif
+test/images/socal-fire_00000202_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000202_post_disaster.tif
+test/images/socal-fire_00000207_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000207_post_disaster.tif
+test/images/socal-fire_00000214_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000214_post_disaster.tif
+test/images/socal-fire_00000216_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000216_post_disaster.tif
+test/images/socal-fire_00000314_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000314_post_disaster.tif
+test/images/socal-fire_00000320_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000320_post_disaster.tif
+test/images/socal-fire_00000323_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000323_post_disaster.tif
+test/images/socal-fire_00000396_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000396_post_disaster.tif
+test/images/socal-fire_00000470_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000470_post_disaster.tif
+test/images/socal-fire_00000485_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000485_post_disaster.tif
+test/images/socal-fire_00000499_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000499_post_disaster.tif
+test/images/socal-fire_00000544_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000544_post_disaster.tif
+test/images/socal-fire_00000546_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000546_post_disaster.tif
+test/images/socal-fire_00000551_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000551_post_disaster.tif
+test/images/socal-fire_00000558_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000558_post_disaster.tif
+test/images/socal-fire_00000588_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000588_post_disaster.tif
+test/images/socal-fire_00000605_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000605_post_disaster.tif
+test/images/socal-fire_00000638_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000638_post_disaster.tif
+test/images/socal-fire_00000656_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000656_post_disaster.tif
+test/images/socal-fire_00000694_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000694_post_disaster.tif
+test/images/socal-fire_00000696_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000696_post_disaster.tif
+test/images/socal-fire_00000713_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000713_post_disaster.tif
+test/images/socal-fire_00000719_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000719_post_disaster.tif
+test/images/socal-fire_00000726_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000726_post_disaster.tif
+test/images/socal-fire_00000738_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000738_post_disaster.tif
+test/images/socal-fire_00000741_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000741_post_disaster.tif
+test/images/socal-fire_00000745_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000745_post_disaster.tif
+test/images/socal-fire_00000756_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000756_post_disaster.tif
+test/images/socal-fire_00000765_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000765_post_disaster.tif
+test/images/socal-fire_00000778_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000778_post_disaster.tif
+test/images/socal-fire_00000831_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000831_post_disaster.tif
+test/images/socal-fire_00000841_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000841_post_disaster.tif
+test/images/socal-fire_00000844_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000844_post_disaster.tif
+test/images/socal-fire_00000849_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000849_post_disaster.tif
+test/images/socal-fire_00000854_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000854_post_disaster.tif
+test/images/socal-fire_00000879_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000879_post_disaster.tif
+test/images/socal-fire_00000885_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000885_post_disaster.tif
+test/images/socal-fire_00000889_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000889_post_disaster.tif
+test/images/socal-fire_00000893_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000893_post_disaster.tif
+test/images/socal-fire_00000898_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000898_post_disaster.tif
+test/images/socal-fire_00000922_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000922_post_disaster.tif
+test/images/socal-fire_00000930_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000930_post_disaster.tif
+test/images/socal-fire_00000963_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000963_post_disaster.tif
+test/images/socal-fire_00000976_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00000976_post_disaster.tif
+test/images/socal-fire_00001006_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001006_post_disaster.tif
+test/images/socal-fire_00001011_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001011_post_disaster.tif
+test/images/socal-fire_00001022_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001022_post_disaster.tif
+test/images/socal-fire_00001037_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001037_post_disaster.tif
+test/images/socal-fire_00001046_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001046_post_disaster.tif
+test/images/socal-fire_00001053_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001053_post_disaster.tif
+test/images/socal-fire_00001056_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001056_post_disaster.tif
+test/images/socal-fire_00001064_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001064_post_disaster.tif
+test/images/socal-fire_00001091_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001091_post_disaster.tif
+test/images/socal-fire_00001098_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001098_post_disaster.tif
+test/images/socal-fire_00001114_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001114_post_disaster.tif
+test/images/socal-fire_00001137_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001137_post_disaster.tif
+test/images/socal-fire_00001141_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001141_post_disaster.tif
+test/images/socal-fire_00001153_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001153_post_disaster.tif
+test/images/socal-fire_00001188_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001188_post_disaster.tif
+test/images/socal-fire_00001193_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001193_post_disaster.tif
+test/images/socal-fire_00001200_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001200_post_disaster.tif
+test/images/socal-fire_00001205_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001205_post_disaster.tif
+test/images/socal-fire_00001220_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001220_post_disaster.tif
+test/images/socal-fire_00001224_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001224_post_disaster.tif
+test/images/socal-fire_00001236_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001236_post_disaster.tif
+test/images/socal-fire_00001246_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001246_post_disaster.tif
+test/images/socal-fire_00001249_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001249_post_disaster.tif
+test/images/socal-fire_00001252_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001252_post_disaster.tif
+test/images/socal-fire_00001262_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001262_post_disaster.tif
+test/images/socal-fire_00001267_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001267_post_disaster.tif
+test/images/socal-fire_00001281_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001281_post_disaster.tif
+test/images/socal-fire_00001309_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001309_post_disaster.tif
+test/images/socal-fire_00001335_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001335_post_disaster.tif
+test/images/socal-fire_00001362_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001362_post_disaster.tif
+test/images/socal-fire_00001378_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001378_post_disaster.tif
+test/images/socal-fire_00001384_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001384_post_disaster.tif
+test/images/socal-fire_00001400_pre_disaster.tif,post fire,burned area,fire-affected region,test/images/socal-fire_00001400_post_disaster.tif
+test/images/midwest-flooding_00000000_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000000_post_disaster.tif
+test/images/midwest-flooding_00000006_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000006_post_disaster.tif
+test/images/midwest-flooding_00000008_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000008_post_disaster.tif
+test/images/midwest-flooding_00000017_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000017_post_disaster.tif
+test/images/midwest-flooding_00000088_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000088_post_disaster.tif
+test/images/midwest-flooding_00000133_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000133_post_disaster.tif
+test/images/midwest-flooding_00000146_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000146_post_disaster.tif
+test/images/midwest-flooding_00000184_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000184_post_disaster.tif
+test/images/midwest-flooding_00000208_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000208_post_disaster.tif
+test/images/midwest-flooding_00000232_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000232_post_disaster.tif
+test/images/midwest-flooding_00000248_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000248_post_disaster.tif
+test/images/midwest-flooding_00000254_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000254_post_disaster.tif
+test/images/midwest-flooding_00000284_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000284_post_disaster.tif
+test/images/midwest-flooding_00000286_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000286_post_disaster.tif
+test/images/midwest-flooding_00000287_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000287_post_disaster.tif
+test/images/midwest-flooding_00000292_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000292_post_disaster.tif
+test/images/midwest-flooding_00000298_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000298_post_disaster.tif
+test/images/midwest-flooding_00000311_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000311_post_disaster.tif
+test/images/midwest-flooding_00000315_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000315_post_disaster.tif
+test/images/midwest-flooding_00000332_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000332_post_disaster.tif
+test/images/midwest-flooding_00000334_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000334_post_disaster.tif
+test/images/midwest-flooding_00000336_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000336_post_disaster.tif
+test/images/midwest-flooding_00000362_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000362_post_disaster.tif
+test/images/midwest-flooding_00000363_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000363_post_disaster.tif
+test/images/midwest-flooding_00000396_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000396_post_disaster.tif
+test/images/midwest-flooding_00000421_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000421_post_disaster.tif
+test/images/midwest-flooding_00000432_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000432_post_disaster.tif
+test/images/midwest-flooding_00000437_pre_disaster.tif,post flood,flooded area,flood-affected region,test/images/midwest-flooding_00000437_post_disaster.tif
+test/images/hurricane-florence_00000005_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000005_post_disaster.tif
+test/images/hurricane-florence_00000039_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000039_post_disaster.tif
+test/images/hurricane-florence_00000056_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000056_post_disaster.tif
+test/images/hurricane-florence_00000076_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000076_post_disaster.tif
+test/images/hurricane-florence_00000082_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000082_post_disaster.tif
+test/images/hurricane-florence_00000092_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000092_post_disaster.tif
+test/images/hurricane-florence_00000112_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000112_post_disaster.tif
+test/images/hurricane-florence_00000113_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000113_post_disaster.tif
+test/images/hurricane-florence_00000116_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000116_post_disaster.tif
+test/images/hurricane-florence_00000127_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000127_post_disaster.tif
+test/images/hurricane-florence_00000129_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000129_post_disaster.tif
+test/images/hurricane-florence_00000150_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000150_post_disaster.tif
+test/images/hurricane-florence_00000152_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000152_post_disaster.tif
+test/images/hurricane-florence_00000160_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000160_post_disaster.tif
+test/images/hurricane-florence_00000167_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000167_post_disaster.tif
+test/images/hurricane-florence_00000169_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000169_post_disaster.tif
+test/images/hurricane-florence_00000172_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000172_post_disaster.tif
+test/images/hurricane-florence_00000177_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000177_post_disaster.tif
+test/images/hurricane-florence_00000179_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000179_post_disaster.tif
+test/images/hurricane-florence_00000182_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000182_post_disaster.tif
+test/images/hurricane-florence_00000186_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000186_post_disaster.tif
+test/images/hurricane-florence_00000211_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000211_post_disaster.tif
+test/images/hurricane-florence_00000268_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000268_post_disaster.tif
+test/images/hurricane-florence_00000323_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000323_post_disaster.tif
+test/images/hurricane-florence_00000384_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000384_post_disaster.tif
+test/images/hurricane-florence_00000386_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000386_post_disaster.tif
+test/images/hurricane-florence_00000396_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000396_post_disaster.tif
+test/images/hurricane-florence_00000415_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000415_post_disaster.tif
+test/images/hurricane-florence_00000448_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000448_post_disaster.tif
+test/images/hurricane-florence_00000456_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000456_post_disaster.tif
+test/images/hurricane-florence_00000466_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000466_post_disaster.tif
+test/images/hurricane-florence_00000468_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000468_post_disaster.tif
+test/images/hurricane-florence_00000471_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000471_post_disaster.tif
+test/images/hurricane-florence_00000480_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000480_post_disaster.tif
+test/images/hurricane-florence_00000488_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000488_post_disaster.tif
+test/images/hurricane-florence_00000491_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000491_post_disaster.tif
+test/images/hurricane-florence_00000509_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000509_post_disaster.tif
+test/images/hurricane-florence_00000541_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000541_post_disaster.tif
+test/images/hurricane-florence_00000544_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-florence_00000544_post_disaster.tif
+test/images/hurricane-harvey_00000036_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000036_post_disaster.tif
+test/images/hurricane-harvey_00000037_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000037_post_disaster.tif
+test/images/hurricane-harvey_00000058_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000058_post_disaster.tif
+test/images/hurricane-harvey_00000062_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000062_post_disaster.tif
+test/images/hurricane-harvey_00000063_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000063_post_disaster.tif
+test/images/hurricane-harvey_00000064_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000064_post_disaster.tif
+test/images/hurricane-harvey_00000093_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000093_post_disaster.tif
+test/images/hurricane-harvey_00000103_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000103_post_disaster.tif
+test/images/hurricane-harvey_00000105_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000105_post_disaster.tif
+test/images/hurricane-harvey_00000120_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000120_post_disaster.tif
+test/images/hurricane-harvey_00000127_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000127_post_disaster.tif
+test/images/hurricane-harvey_00000133_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000133_post_disaster.tif
+test/images/hurricane-harvey_00000143_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000143_post_disaster.tif
+test/images/hurricane-harvey_00000150_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000150_post_disaster.tif
+test/images/hurricane-harvey_00000163_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000163_post_disaster.tif
+test/images/hurricane-harvey_00000166_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000166_post_disaster.tif
+test/images/hurricane-harvey_00000202_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000202_post_disaster.tif
+test/images/hurricane-harvey_00000211_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000211_post_disaster.tif
+test/images/hurricane-harvey_00000225_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000225_post_disaster.tif
+test/images/hurricane-harvey_00000246_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000246_post_disaster.tif
+test/images/hurricane-harvey_00000252_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000252_post_disaster.tif
+test/images/hurricane-harvey_00000254_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000254_post_disaster.tif
+test/images/hurricane-harvey_00000259_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000259_post_disaster.tif
+test/images/hurricane-harvey_00000276_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000276_post_disaster.tif
+test/images/hurricane-harvey_00000283_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000283_post_disaster.tif
+test/images/hurricane-harvey_00000298_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000298_post_disaster.tif
+test/images/hurricane-harvey_00000301_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000301_post_disaster.tif
+test/images/hurricane-harvey_00000303_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000303_post_disaster.tif
+test/images/hurricane-harvey_00000304_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000304_post_disaster.tif
+test/images/hurricane-harvey_00000305_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000305_post_disaster.tif
+test/images/hurricane-harvey_00000308_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000308_post_disaster.tif
+test/images/hurricane-harvey_00000310_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000310_post_disaster.tif
+test/images/hurricane-harvey_00000314_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000314_post_disaster.tif
+test/images/hurricane-harvey_00000324_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000324_post_disaster.tif
+test/images/hurricane-harvey_00000326_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000326_post_disaster.tif
+test/images/hurricane-harvey_00000331_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000331_post_disaster.tif
+test/images/hurricane-harvey_00000339_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000339_post_disaster.tif
+test/images/hurricane-harvey_00000353_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000353_post_disaster.tif
+test/images/hurricane-harvey_00000416_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000416_post_disaster.tif
+test/images/hurricane-harvey_00000458_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000458_post_disaster.tif
+test/images/hurricane-harvey_00000460_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000460_post_disaster.tif
+test/images/hurricane-harvey_00000464_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000464_post_disaster.tif
+test/images/hurricane-harvey_00000466_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000466_post_disaster.tif
+test/images/hurricane-harvey_00000468_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000468_post_disaster.tif
+test/images/hurricane-harvey_00000476_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000476_post_disaster.tif
+test/images/hurricane-harvey_00000485_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000485_post_disaster.tif
+test/images/hurricane-harvey_00000498_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000498_post_disaster.tif
+test/images/hurricane-harvey_00000504_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000504_post_disaster.tif
+test/images/hurricane-harvey_00000510_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000510_post_disaster.tif
+test/images/hurricane-harvey_00000516_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-harvey_00000516_post_disaster.tif
+test/images/hurricane-matthew_00000277_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-matthew_00000277_post_disaster.tif
+test/images/hurricane-matthew_00000286_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-matthew_00000286_post_disaster.tif
+test/images/hurricane-matthew_00000291_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-matthew_00000291_post_disaster.tif
+test/images/hurricane-matthew_00000325_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-matthew_00000325_post_disaster.tif
+test/images/hurricane-matthew_00000348_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-matthew_00000348_post_disaster.tif
+test/images/hurricane-matthew_00000352_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-matthew_00000352_post_disaster.tif
+test/images/hurricane-matthew_00000383_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-matthew_00000383_post_disaster.tif
+test/images/hurricane-matthew_00000395_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-matthew_00000395_post_disaster.tif
+test/images/hurricane-michael_00000030_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000030_post_disaster.tif
+test/images/hurricane-michael_00000057_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000057_post_disaster.tif
+test/images/hurricane-michael_00000069_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000069_post_disaster.tif
+test/images/hurricane-michael_00000070_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000070_post_disaster.tif
+test/images/hurricane-michael_00000082_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000082_post_disaster.tif
+test/images/hurricane-michael_00000089_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000089_post_disaster.tif
+test/images/hurricane-michael_00000121_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000121_post_disaster.tif
+test/images/hurricane-michael_00000128_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000128_post_disaster.tif
+test/images/hurricane-michael_00000129_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000129_post_disaster.tif
+test/images/hurricane-michael_00000149_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000149_post_disaster.tif
+test/images/hurricane-michael_00000155_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000155_post_disaster.tif
+test/images/hurricane-michael_00000163_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000163_post_disaster.tif
+test/images/hurricane-michael_00000168_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000168_post_disaster.tif
+test/images/hurricane-michael_00000176_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000176_post_disaster.tif
+test/images/hurricane-michael_00000178_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000178_post_disaster.tif
+test/images/hurricane-michael_00000182_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000182_post_disaster.tif
+test/images/hurricane-michael_00000193_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000193_post_disaster.tif
+test/images/hurricane-michael_00000198_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000198_post_disaster.tif
+test/images/hurricane-michael_00000203_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000203_post_disaster.tif
+test/images/hurricane-michael_00000218_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000218_post_disaster.tif
+test/images/hurricane-michael_00000235_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000235_post_disaster.tif
+test/images/hurricane-michael_00000242_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000242_post_disaster.tif
+test/images/hurricane-michael_00000254_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000254_post_disaster.tif
+test/images/hurricane-michael_00000256_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000256_post_disaster.tif
+test/images/hurricane-michael_00000264_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000264_post_disaster.tif
+test/images/hurricane-michael_00000270_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000270_post_disaster.tif
+test/images/hurricane-michael_00000278_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000278_post_disaster.tif
+test/images/hurricane-michael_00000291_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000291_post_disaster.tif
+test/images/hurricane-michael_00000316_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000316_post_disaster.tif
+test/images/hurricane-michael_00000327_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000327_post_disaster.tif
+test/images/hurricane-michael_00000352_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000352_post_disaster.tif
+test/images/hurricane-michael_00000366_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000366_post_disaster.tif
+test/images/hurricane-michael_00000368_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000368_post_disaster.tif
+test/images/hurricane-michael_00000378_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000378_post_disaster.tif
+test/images/hurricane-michael_00000384_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000384_post_disaster.tif
+test/images/hurricane-michael_00000397_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000397_post_disaster.tif
+test/images/hurricane-michael_00000399_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000399_post_disaster.tif
+test/images/hurricane-michael_00000414_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000414_post_disaster.tif
+test/images/hurricane-michael_00000418_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000418_post_disaster.tif
+test/images/hurricane-michael_00000426_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000426_post_disaster.tif
+test/images/hurricane-michael_00000428_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000428_post_disaster.tif
+test/images/hurricane-michael_00000437_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000437_post_disaster.tif
+test/images/hurricane-michael_00000447_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000447_post_disaster.tif
+test/images/hurricane-michael_00000459_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000459_post_disaster.tif
+test/images/hurricane-michael_00000468_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000468_post_disaster.tif
+test/images/hurricane-michael_00000471_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000471_post_disaster.tif
+test/images/hurricane-michael_00000478_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000478_post_disaster.tif
+test/images/hurricane-michael_00000481_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000481_post_disaster.tif
+test/images/hurricane-michael_00000507_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000507_post_disaster.tif
+test/images/hurricane-michael_00000526_pre_disaster.tif,post hurricane,storm damaged area,hurricane-affected region,test/images/hurricane-michael_00000526_post_disaster.tif
+test/images/palu-tsunami_00000008_pre_disaster.tif,post tsunami,inundated coastal area,tsunami-affected coastline,test/images/palu-tsunami_00000008_post_disaster.tif
+test/images/palu-tsunami_00000010_pre_disaster.tif,post tsunami,inundated coastal area,tsunami-affected coastline,test/images/palu-tsunami_00000010_post_disaster.tif
+test/images/palu-tsunami_00000012_pre_disaster.tif,post tsunami,inundated coastal area,tsunami-affected coastline,test/images/palu-tsunami_00000012_post_disaster.tif
+test/images/palu-tsunami_00000032_pre_disaster.tif,post tsunami,inundated coastal area,tsunami-affected coastline,test/images/palu-tsunami_00000032_post_disaster.tif
+test/images/palu-tsunami_00000096_pre_disaster.tif,post tsunami,inundated coastal area,tsunami-affected coastline,test/images/palu-tsunami_00000096_post_disaster.tif
+test/images/palu-tsunami_00000165_pre_disaster.tif,post tsunami,inundated coastal area,tsunami-affected coastline,test/images/palu-tsunami_00000165_post_disaster.tif
+test/images/palu-tsunami_00000173_pre_disaster.tif,post tsunami,inundated coastal area,tsunami-affected coastline,test/images/palu-tsunami_00000173_post_disaster.tif
+test/images/palu-tsunami_00000185_pre_disaster.tif,post tsunami,inundated coastal area,tsunami-affected coastline,test/images/palu-tsunami_00000185_post_disaster.tif
+test/images/palu-tsunami_00000193_pre_disaster.tif,post tsunami,inundated coastal area,tsunami-affected coastline,test/images/palu-tsunami_00000193_post_disaster.tif
+test/images/guatemala-volcano_00000003_pre_disaster.tif,post volcano,volcanic damage,lava-affected area,test/images/guatemala-volcano_00000003_post_disaster.tif
+test/images/guatemala-volcano_00000005_pre_disaster.tif,post volcano,volcanic damage,lava-affected area,test/images/guatemala-volcano_00000005_post_disaster.tif
+test/images/guatemala-volcano_00000009_pre_disaster.tif,post volcano,volcanic damage,lava-affected area,test/images/guatemala-volcano_00000009_post_disaster.tif
+test/images/guatemala-volcano_00000021_pre_disaster.tif,post volcano,volcanic damage,lava-affected area,test/images/guatemala-volcano_00000021_post_disaster.tif
